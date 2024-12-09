@@ -5,13 +5,14 @@ import Home from './pages/Home';
 import Research from './pages/Research';
 import Publications from './pages/Publications';
 import CV from './pages/CV';
+import Footer from './components/Footer';
 
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-100">
-        <Navbar />
-        <div className="container mx-auto px-4 py-8">
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col">
+  <Navbar />
+  <div className="container mx-auto px-4 py-8 flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/research" element={<Research />} />
@@ -19,6 +20,7 @@ function App() {
             <Route path="/cv" element={<CV />} />
           </Routes>
         </div>
+     <Footer />
       </div>
     </Router>
   );

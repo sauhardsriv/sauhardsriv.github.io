@@ -3,9 +3,9 @@ import React from 'react';
 function Publications() {
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">Publications</h1>
+      <h1 className="text-black dark:text-white text-3xl font-bold mb-6">Publications</h1>
       <div className="space-y-6">
-        <div className="bg-white shadow rounded-lg p-6">
+        <div className="bg-white dark:bg-gray-700 shadow rounded-lg p-6 text-black dark:text-white">
           <h2 className="text-2xl font-semibold mb-4">Journal Articles</h2>
           <ul className="space-y-4">
             <li className="border-b pb-4">
@@ -16,7 +16,7 @@ function Publications() {
           </ul>
         </div>
         
-        <div className="bg-white shadow rounded-lg p-6">
+        <div className="bg-white dark:bg-gray-700 shadow rounded-lg p-6 text-black dark:text-white">
           <h2 className="text-2xl font-semibold mb-4">Conference Papers</h2>
           <ul className="space-y-4">
             <li className="border-b pb-4">
