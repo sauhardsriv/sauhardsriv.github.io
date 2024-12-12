@@ -9,7 +9,7 @@ function Navbar() {
        <div className="flex items-center space-x-4">
          <Link to="/" className="hover:text-blue-200">Home</Link>
          <Link to="/research" className="hover:text-blue-200">Research</Link>
-        {/*  <Link to="/publications" className="mx-2 hover:text-blue-200">Publications</Link> */}
+         {/*<Link to="/publications" className="mx-2 hover:text-blue-200">Publications</Link>*/}
          <Link to="/cv" className="hover:text-blue-200">CV</Link>
        </div>
      </div>
