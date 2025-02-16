@@ -1,0 +1,13 @@
+# *
+User-agent: *
+Allow: /
+
+# *
+User-agent: *
+Allow: /*.pdf
+
+# Host
+Host: https://sauhardsriv.github.io
+
+# Sitemaps
+Sitemap: https://sauhardsriv.github.io/sitemap.xml
