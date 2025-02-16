@@ -4,7 +4,8 @@ const nextConfig = {
   images: {
     unoptimized: true // Required for static export
   },
-  basePath: '/sauhardsriv.github.io',
+  basePath: '',
+  assetPrefix: '',
 }
 
 module.exports = nextConfig
