@@ -8,7 +8,8 @@
     "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "next build && next-sitemap && node create-nojekyll.js && gh-pages -d out --dotfiles true"
+    "predeploy": "next build && next-sitemap && node create-nojekyll.js",
+    "deploy": "gh-pages -d out --dotfiles"
   },
   "dependencies": {
     "lucide-react": "^0.475.0",
