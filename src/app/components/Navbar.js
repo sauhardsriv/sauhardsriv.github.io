@@ -2,19 +2,13 @@
 'use client'
 
 import Link from 'next/link'
-import { useTheme } from 'next-themes'
-import { Sun, Moon } from 'lucide-react'
-import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
+import ThemeToggle from './ThemeToggle'
 
 export default function Navbar() {
-  const [mounted, setMounted] = useState(false)
-  const { theme, setTheme } = useTheme()
+
   const pathname = usePathname()
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   const NavLink = ({ href, children }) => {
     const isActive = pathname === href
@@ -50,35 +44,15 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center">
-          {/* Name on the left - links to homepage */}
-
-
-          {/* Navigation links - centered */}
-
           <div className="flex items-center space-x-2 sm:space-x-4">
             <NavLink href="/">Home</NavLink>
             <NavLink href="/research">Research</NavLink>
             <NavLink href="/cv">CV</NavLink>
           </div>
 
-
-          {/* Theme toggle button - subtle in the corner */}
           <div className="flex items-center ml-4 sm:ml-6">
-          <span className="h-6 w-px bg-primary-text dark:bg-dark-text opacity-20 mx-2"></span>
-            {mounted && (
-              <button
-                type="button"
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="p-2 rounded-full hover:bg-primary-hover hover:bg-opacity-10 dark:hover:bg-dark-hover dark:hover:bg-opacity-20 transition-all duration-200"
-                aria-label="Toggle theme"
-              >
-                {theme === 'dark' ? (
-                  <Sun className="h-5 w-5" />
-                ) : (
-                  <Moon className="h-5 w-5" />
-                )}
-              </button>
-            )}
+            <span className="h-6 w-px bg-primary-text dark:bg-dark-text opacity-20 mx-2"></span>
+            <ThemeToggle />
           </div>
         </div>
       </div>

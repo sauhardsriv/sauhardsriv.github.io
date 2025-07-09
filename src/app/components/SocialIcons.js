@@ -18,7 +18,7 @@ export default function SocialIcons() {
   return (
     <div className="flex space-x-2">
       <a 
-        href="mailto:your.email@example.com" 
+        href="mailto:sauhardsrivastava@gmail.com" 
         className="text-primary-text dark:text-dark-text hover:text-primary-hover dark:hover:text-dark-hover transition-colors duration-200" 
         target="_blank" 
         rel="noopener noreferrer"
@@ -26,7 +26,7 @@ export default function SocialIcons() {
         <MdEmail size={20} />
       </a>
       <a 
-        href="https://www.linkedin.com/in/your-profile" 
+        href="https://www.linkedin.com/in/sauhard-srivastava/" 
         className="text-primary-text dark:text-dark-text hover:text-primary-hover dark:hover:text-dark-hover transition-colors duration-200" 
         target="_blank" 
         rel="noopener noreferrer"
@@ -34,7 +34,7 @@ export default function SocialIcons() {
         <FaLinkedinIn size={20} />
       </a>
       <a 
-        href="https://github.com/your-profile" 
+        href="https://github.com/sauhardsriv" 
         className="text-primary-text dark:text-dark-text hover:text-primary-hover dark:hover:text-dark-hover transition-colors duration-200" 
         target="_blank" 
         rel="noopener noreferrer"
@@ -42,7 +42,7 @@ export default function SocialIcons() {
         <FaGithub size={20} />
       </a>
       <a 
-        href="https://x.com/your-profile" 
+        href="https://x.com/sauhardsriv" 
         className="text-primary-text dark:text-dark-text hover:text-primary-hover dark:hover:text-dark-hover transition-colors duration-200" 
         target="_blank" 
         rel="noopener noreferrer"

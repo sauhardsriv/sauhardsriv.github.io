@@ -1,3 +1,4 @@
+// src/app/layout.js
 import './globals.css'
 import { Noto_Sans } from 'next/font/google'
 import Providers from './providers'
@@ -12,7 +13,6 @@ const notoSans = Noto_Sans({
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head />
       <body className={notoSans.className}>
         <Providers>
           <ClientWrapper>

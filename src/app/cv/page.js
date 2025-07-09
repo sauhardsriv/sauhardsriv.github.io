@@ -11,7 +11,7 @@ export default function CV() {
       <h1 className="text-primary-text dark:text-dark-text text-[24px] font-semibold mb-6">
         Curriculum Vitae{' '}
         <a 
-          href="/resume/resume.pdf" 
+          href="/resume/resume-web.pdf" 
           className="text-primary-url dark:text-dark-url hover:text-primary-url-hover dark:hover:text-dark-url-hover font-extrabold" 
           target="_blank" 
           rel="noopener noreferrer"
