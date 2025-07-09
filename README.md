@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+**Next.js Website Editing, Deployment, and Git Push Workflow**
 
-## Getting Started
+This document outlines the essential commands you need to update, preview, deploy, and push your Next.js website hosted on GitHub Pages.
 
-First, run the development server:
+---
+
+### 1. Start Local Development Server
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd /path/to/your/project
+npm install          # (only if needed)
+npm run dev          # Starts local server at http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Make Edits
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- Open the project in a code editor (e.g., VS Code)
+- Edit content inside `pages/`, `components/`, or relevant folders
+- Save and preview live at [http://localhost:3000](http://localhost:3000)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+### 3. Deploy to GitHub Pages
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run deploy       # Runs build, export, sitemap, and deploys to gh-pages
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 4. Commit and Push Changes to Main Branch
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+git add .                                # Stage all changes
+git commit -m "Describe your changes"    # Commit with a message
+git push origin main                     # Push to main branch on GitHub
+```
+
+
+
