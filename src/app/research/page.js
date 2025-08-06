@@ -14,6 +14,8 @@ export default function Research() {
         <section className="bg-primary-main dark:bg-dark-surface shadow-md rounded-lg p-6 text-primary-text dark:text-dark-text">
           <h2 className="text-[20px] font-semibold mb-3">Working Papers</h2>
           <ul className="list-disc ml-6 space-y-6 text-[16px] font-normal">
+            
+            
             <li>
               <div className="space-y-2">
                 <p> Financial Frictions, FX Reserves, and Exchange Rate Management in Emerging Economies {' '}
@@ -27,11 +29,8 @@ export default function Research() {
                   </a> </p>
                 <ul className="list-disc ml-6 space-y-1 text-sm text-primary-text dark:text-dark-text opacity-70 dark:opacity-70 font-normal">
                   <li><span className="italic">Revise & Resubmit- Journal of International Economics. </span>
-                    </li>
+                  </li>
                 </ul>
-
-
-
                 <details className="group">
                   <summary className="cursor-pointer flex items-center gap-2 text-sm text-primary-text dark:text-dark-text opacity-70 dark:opacity-70 hover:opacity-90 dark:hover:opacity-90 transition-opacity">
                     <span className="transform transition-transform group-open:rotate-180">
@@ -61,7 +60,10 @@ export default function Research() {
                   </div>
                 </details>
               </div>
-            </li>            <li>
+            </li>
+
+
+            <li>
               <div className="space-y-2">
                 <p>The Transition to Net Zero in a Small Open Economy (with{' '}
                   <a
@@ -93,18 +95,49 @@ export default function Research() {
                   </summary>
                   <div className="mt-3 pl-6 text-sm text-primary-text dark:text-dark-text opacity-80 leading-relaxed">
                     <p>
-                      This paper examines the macroeconomic cost and implications of transitioning to net zero
-                      for a fossil-fuel dependent, small open economy. A net zero target operates as an anticipated
-                      negative productivity shock that lowers consumption, raises the current account surplus along
-                      the transition path, and has ambiguous effects on the real exchange rate. A transition to net
-                      zero appreciates the currency by lowering the import bill for fossil fuels, but depreciates the
-                      currency by making domestic tradables more expensive. We calibrate the model to the case of
-                      Japan and find that the transition to net zero lowers consumption by 0.2-2%.
+                      This paper examines the macroeconomic cost and implications of transitioning to net zero for a fossil-fuel dependent, small open economy. A net zero target operates as an anticipated negative productivity shock that lowers consumption, raises the current account surplus along the transition path, and has ambiguous effects on the real exchange rate. A transition to net zero appreciates the currency by lowering the import bill for fossil fuels, but depreciates the currency by making domestic tradables more expensive. We calibrate the model to the case ofJapan and find that the transition to net zero lowers consumption by 0.2-2%.
                     </p>
                   </div>
                 </details>
               </div>
             </li>
+
+
+
+            <li>
+              <div className="space-y-2">
+                <p>The Price of Quality: Demand-Driven Technology Choice and the Penn Effect
+                  <a
+                    href="/papers/hbs_new2025.pdf"
+                    className="text-primary-url dark:text-dark-url hover:text-primary-url-hover dark:hover:text-dark-url-hover ml-2 font-semibold"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    [PDF]
+                  </a></p>
+
+                <details className="group">
+                  <summary className="cursor-pointer flex items-center gap-2 text-sm text-primary-text dark:text-dark-text opacity-70 dark:opacity-70 hover:opacity-90 dark:hover:opacity-90 transition-opacity">
+                    <span className="transform transition-transform group-open:rotate-180">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </span>
+                    Abstract
+                  </summary>
+                  <div className="mt-3 pl-6 text-sm text-primary-text dark:text-dark-text opacity-80 leading-relaxed">
+                    <p>
+                      This paper proposes a novel, demand-side explanation for the Penn effect: the observation that richer countries systematically exhibit higher price levels. We develop a general equilibrium model where income-dependent preferences lead more productive countries to produce and consume higher-quality, more resource-intensive non-tradeable goods. Our key result is that this endogenous shift toward producing superior goods, which have higher unit factor requirements, outweighs the standard cost-reducing effects of productivity growth, resulting in higher prices. The model shows that quality upgrading emerges as an equilibrium response to rising incomes and leads to higher non-tradeable prices in richer economies even in the absence of Harrod-Balassa-Samuelson (HBS) effects. Using Penn World Table data, the model replicates the empirical Penn effect, explaining about 69 percent of cross-country price variation without relying on HBS effects.
+                    </p>
+                  </div>
+                </details>
+              </div>
+            </li>
+
+
+
+
+
           </ul>
         </section>
 
@@ -145,10 +178,11 @@ export default function Research() {
                   </div>
                 </details>
               </div>
-            </li>            
-            
-            
-           <li>
+            </li>
+
+
+
+            <li>
               <div className="space-y-2">
                 <p>  {' '}
                   <a
@@ -161,10 +195,8 @@ export default function Research() {
                   </a>{' '}(with Siddhartha Nath)</p>
                 <ul className="list-disc ml-6 space-y-1 text-sm text-primary-text dark:text-dark-text opacity-70 dark:opacity-70 font-normal">
                   <li><span className="italic">Theoretical Economics Letters. </span>Vol. 12 No. 3, pp. 636-663, June 2022.</li>
+               
                 </ul>
-
-
-
                 <details className="group">
                   <summary className="cursor-pointer flex items-center gap-2 text-sm text-primary-text dark:text-dark-text opacity-70 dark:opacity-70 hover:opacity-90 dark:hover:opacity-90 transition-opacity">
                     <span className="transform transition-transform group-open:rotate-180">
@@ -181,7 +213,10 @@ export default function Research() {
                   </div>
                 </details>
               </div>
-            </li> 
+            </li>
+          
+          
+          
           </ul>
         </section>
 
