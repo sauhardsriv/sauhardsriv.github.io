@@ -14,8 +14,8 @@ export default function Research() {
         <section className="bg-primary-main dark:bg-dark-surface shadow-md rounded-lg p-6 text-primary-text dark:text-dark-text">
           <h2 className="text-[20px] font-semibold mb-3">Working Papers</h2>
           <ul className="list-disc ml-6 space-y-6 text-[16px] font-normal">
-            
-            
+
+
             <li>
               <div className="space-y-2">
                 <p> Financial Frictions, FX Reserves, and Exchange Rate Management in Emerging Economies {' '}
@@ -42,20 +42,7 @@ export default function Research() {
                   </summary>
                   <div className="mt-3 pl-6 text-sm text-primary-text dark:text-dark-text opacity-80 leading-relaxed">
                     <p>
-                      Emerging economies, even those with considerable external debt, hold substantial amounts
-                      in foreign exchange (FX) reserves. This paper identifies a distinct channel through which
-                      financial market frictions explain why net external debtor economies might prefer maintaining
-                      reserves to reducing their external debt. In a small open economy with free capital mobility
-                      and financial frictions, the model shows that the central bank optimally maintains FX reserves
-                      instead of reducing the economy’s external debt. This is because reserve operations influence
-                      the exchange rate; specifically, reserve accumulation depreciates the exchange rate, diluting the
-                      real value of existing debt payments and minimizing resource losses. Furthermore, the model
-                      shows that the optimal reserve accumulation policy under commitment is time-inconsistent
-                      as the central bank faces incentives to mitigate the external debt burden. A time-consistent
-                      equilibrium features even greater reserve accumulation. Finally, a quantitative analysis of
-                      the model demonstrates that in the presence of volatile capital flows, the economy optimally
-                      maintains a portfolio of external debt and foreign reserves with FX interventions stabilizing the
-                      exchange rate and smoothing consumption.
+                      Emerging economy central banks often hold large FX reserves while residents carry substantial local-currency-linked external liabilities. With financial frictions creating interest parity gaps, such opposing positions imply a carry cost. In a small open economy with intermediation frictions and inherited local-currency debt, we study optimal reserve and exchange rate policies, explaining why debtor economies may retain reserves rather than netting out costly gross positions. While policy can eliminate costly intermediation by deploying reserves and appreciating the real exchange rate, doing so creates a general equilibrium revaluation effect which raises the real burden of local-currency obligations. Optimal policy retains reserves, accepting some intermediation to avoid a larger revaluation loss. This policy is time-inconsistent: a discretionary central bank prefers stronger ex-post appreciation; a time-consistent equilibrium features more reserve retention and larger interest parity gaps. Revaluation costs restrain reserve deployment; when large, optimal policy retains more reserves during disruptions than in normal times.
                     </p>
                   </div>
                 </details>
@@ -195,7 +182,7 @@ export default function Research() {
                   </a>{' '}(with Siddhartha Nath)</p>
                 <ul className="list-disc ml-6 space-y-1 text-sm text-primary-text dark:text-dark-text opacity-70 dark:opacity-70 font-normal">
                   <li><span className="italic">Theoretical Economics Letters. </span>Vol. 12 No. 3, pp. 636-663, June 2022.</li>
-               
+
                 </ul>
                 <details className="group">
                   <summary className="cursor-pointer flex items-center gap-2 text-sm text-primary-text dark:text-dark-text opacity-70 dark:opacity-70 hover:opacity-90 dark:hover:opacity-90 transition-opacity">
@@ -214,9 +201,9 @@ export default function Research() {
                 </details>
               </div>
             </li>
-          
-          
-          
+
+
+
           </ul>
         </section>
 
