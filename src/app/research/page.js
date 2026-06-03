@@ -15,6 +15,35 @@ export default function Research() {
           <h2 className="text-[20px] font-semibold mb-3">Working Papers</h2>
           <ul className="list-disc ml-6 space-y-6 text-[16px] font-normal">
 
+            <li>
+              <div className="space-y-2">
+                <p>Import Price Spikes and Real Income Stabilization through Exchange Rates in a Heterogenous Agent Economy
+                  <a
+                    href="#"
+                    className="text-primary-url dark:text-dark-url hover:text-primary-url-hover dark:hover:text-dark-url-hover ml-2 font-semibold"
+                    target=""
+                    rel="noopener noreferrer"
+                  >
+                    [Draft Available Soon]
+                  </a></p>
+
+                <details className="group">
+                  <summary className="cursor-pointer flex items-center gap-2 text-sm text-primary-text dark:text-dark-text opacity-70 dark:opacity-70 hover:opacity-90 dark:hover:opacity-90 transition-opacity">
+                    <span className="transform transition-transform group-open:rotate-180">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </span>
+                    Abstract
+                  </summary>
+                  <div className="mt-3 pl-6 text-sm text-primary-text dark:text-dark-text opacity-80 leading-relaxed">
+                    <p>
+                      This paper characterizes the jointly optimal exchange rate and monetary policies under commitment in a heterogenous agent import dependent small open economy facing price spikes. When some agents are borrowing constrained, and the economy faces an import price shock, exchange rate management becomes a tool for real income stabilization through the intertemporal margin while optimal monetary policy targets the labor wedge. In an open economy these roles are not substitutable. In the presence of financial frictions, optimal exchange rate policy requires temporary interest parity deviations to stabilize import prices and real incomes. At the same time, monetary policy through the labor wedge cuts inflation. We illustrate that a  Ramsey planner internalizes pecuniary general equilibrium effects of exchange rates to redistribute real incomes: facing an import price spike, the planner chooses to lean against the associated exchange rate depreciation to cut exports and redistribute real resources towards the borrowing constrained agents through their real wages. A quantitative two-agent model calibrated to Japan facing an energy price shock shows that constrained optimal policy delivers significant real income and welfare gains over laissez-faire and Taylor-rule policies. This policy is implementable jointly though foreign exchange interventions and inflation targeting.
+                    </p>
+                  </div>
+                </details>
+              </div>
+            </li>
 
             <li>
               <div className="space-y-2">
@@ -27,8 +56,15 @@ export default function Research() {
                   >
                     [PDF]
                   </a> </p>
-                <ul className="list-disc ml-6 space-y-1 text-sm text-primary-text dark:text-dark-text opacity-70 dark:opacity-70 font-normal">
-                  <li><span className="italic">Revise & Resubmit- Journal of International Economics. </span>
+                <ul className="list-disc ml-6 space-y-1 text-sm text-primary-text dark:text-dark-text  font-normal">
+                  <li><span>Accepted- <a
+                    href="https://doi.org/10.1016/j.jinteco.2026.104282"
+                    className="text-primary-url dark:text-dark-url hover:text-primary-url-hover dark:hover:text-dark-url-hover"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Journal of International Economics
+                  </a> </span>
                   </li>
                 </ul>
                 <details className="group">
