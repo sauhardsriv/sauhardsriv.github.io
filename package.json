@@ -6,9 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "postbuild": "next-sitemap",
-    "start": "next start",
-    "lint": "next lint",
-    "predeploy": "next build && next-sitemap && node create-nojekyll.js",
+    "predeploy": "npm run build && node create-nojekyll.js",
     "deploy": "gh-pages -d out --dotfiles"
   },
   "dependencies": {

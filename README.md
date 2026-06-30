@@ -1,42 +1,73 @@
-**Next.js Website Editing, Deployment, and Git Push Workflow**
+# Sauhard Srivastava Academic Website
 
-This document outlines the essential commands you need to update, preview, deploy, and push your Next.js website hosted on GitHub Pages.
+Next.js academic website configured for GitHub Pages static export, responsive display, system-aware light/dark themes, and search engine discoverability.
 
----
+## Project Structure
 
-### 1. Start Local Development Server
+- `site.settings.js`: central site identity, theme colors, navigation, social links, asset paths, and shared style recipes.
+- `src/app/layout.js`: root HTML shell, global metadata, viewport settings, SEO defaults, and app providers.
+- `src/app/page.js`: homepage route.
+- `src/app/research/page.js`: research route.
+- `src/app/cv/page.js`: CV route.
+- `src/app/components/`: reusable UI components.
+- `public/`: static assets, PDFs, robots file, sitemap, and verification files.
+
+## Centralized Settings
+
+Adjust shared site configuration in `site.settings.js` before editing individual pages:
+
+- Site name, URL, author, description, keywords, and license.
+- Light and dark theme colors.
+- Default theme behavior through `next-themes`.
+- Navigation links and social links.
+- Profile/CV asset paths.
+- Shared Tailwind class recipes used across pages and components.
+
+Font loading is centralized in `src/app/font.js`. Next.js requires `next/font` options to be literal values, so font-loader options should be changed there.
+
+## Theme Behavior
+
+The site uses `next-themes` with:
+
+- `defaultTheme: 'system'`
+- `enableSystem: true`
+- `storageKey: 'theme'`
+- `disableTransitionOnChange: true`
+
+This means first load follows the visitor's OS/browser preference, then persists any manual toggle choice.
+
+## SEO And Static Export
+
+SEO-critical settings are implemented in the Next.js App Router:
+
+- Root metadata and viewport settings live in `src/app/layout.js`.
+- Page-specific metadata lives in each route file.
+- `next.config.js` enables `output: 'export'` for static HTML generation.
+- `next-sitemap.config.js` generates `public/sitemap.xml` and `public/robots.txt`.
+- Static assets and PDFs live under `public/` for direct indexing and linking.
+
+## Development
 
 ```bash
-cd /path/to/your/project
-npm install          # (only if needed)
-npm run dev          # Starts local server at http://localhost:3000
+npm install
+npm run dev
 ```
 
-### 2. Make Edits
+Open `http://localhost:3000`.
 
-- Open the project in a code editor (e.g., VS Code)
-- Edit content inside `pages/`, `components/`, or relevant folders
-- Save and preview live at [http://localhost:3000](http://localhost:3000)
-
----
-
-### 3. Deploy to GitHub Pages
+## Build Check
 
 ```bash
-npm run deploy       # Runs build, export, sitemap, and deploys to gh-pages
+npm run build
 ```
 
+This runs the Next.js production build, static export, and sitemap generation.
 
-
----
-
-### 4. Commit and Push Changes to Main Branch
+## Deploy
 
 ```bash
-git add .                                # Stage all changes
-git commit -m "Describe your changes"    # Commit with a message
-git push origin main                     # Push to main branch on GitHub
+npm run predeploy
+npm run deploy
 ```
 
-
-
+`predeploy` builds the static site and creates `out/.nojekyll`. `deploy` publishes the `out/` directory to GitHub Pages through `gh-pages`.

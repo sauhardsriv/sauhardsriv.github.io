@@ -1,6 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 const fs = require('fs');
 const path = require('path');
+const { site } = require('./site.settings');
 
 // Function to recursively get all PDF files from public directory
 function getAllPDFs(dirPath = 'public', arrayOfFiles = []) {
@@ -25,7 +26,7 @@ function getAllPDFs(dirPath = 'public', arrayOfFiles = []) {
 }
 
 module.exports = {
-  siteUrl: process.env.SITE_URL || 'https://sauhardsriv.github.io',
+  siteUrl: process.env.SITE_URL || site.url,
   generateRobotsTxt: true,
   generateIndexSitemap: false,
   exclude: ['/404'],
@@ -49,12 +50,36 @@ module.exports = {
   robotsTxtOptions: {
     policies: [
       {
-        userAgent: '*',
+        userAgent: 'Googlebot',
         allow: '/',
       },
       {
+        userAgent: 'Bingbot',
+        allow: '/',
+      },
+      {
+        userAgent: 'OAI-SearchBot',
+        allow: '/',
+      },
+      {
+        userAgent: 'ChatGPT-User',
+        allow: '/',
+      },
+      {
+        userAgent: 'GPTBot',
+        disallow: '/',
+      },
+      {
+        userAgent: 'Google-Extended',
+        disallow: '/',
+      },
+      {
+        userAgent: 'CCBot',
+        disallow: '/',
+      },
+      {
         userAgent: '*',
-        allow: ['/*.pdf'] // Allow all PDFs
+        allow: '/',
       }
     ],
   },

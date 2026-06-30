@@ -1,16 +1,18 @@
 // tailwind.config.js
 /** @type {import('tailwindcss').Config} */
+const { theme } = require('./site.settings')
+
 module.exports = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './site.settings.js',
   ],
-  darkMode: 'class', // Add this line
+  darkMode: theme.darkMode,
   theme: {
     extend: {
       fontFamily: {
-        'noto-sans': ['Noto Sans', 'sans-serif'],
+        sans: ['var(--font-site)', 'sans-serif'],
+        'site-sans': ['var(--font-site)', 'sans-serif'],
       },
       fontWeight: {
         'thin': 100,
@@ -23,27 +25,7 @@ module.exports = {
         'extrabold': 800,
         'black': 900,
       },
-      colors: {
-        primary: {
-          light: '#FFFFFF',
-          main: '#F5F5F5',
-          dark: '#E7EBF0',
-          navbar: '#F5F5F5',
-          text: '#2e2e2e',
-          hover: '#2196F3',
-          url: '#2196F3',
-          'url-hover': '#E91E63',
-        },
-        dark: {
-          primary: '#0d1117',
-          surface: '#242A33',
-          navbar: '#242A33',
-          text: '#FFFFFF',
-          hover: '#64B5F6',
-          url: '#64B5F6',
-          'url-hover': '#F06292',
-        }
-      }
+      colors: theme.colors,
     },
   },
   plugins: [],

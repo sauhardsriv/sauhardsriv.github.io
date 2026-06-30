@@ -5,29 +5,10 @@
 @layer base {
   body {
     @apply bg-primary-light text-primary-text;
+    font-family: var(--font-site), sans-serif;
   }
 
   .dark body {
     @apply bg-dark-primary text-dark-text;
   }
 }
-
-/* Custom scrollbar styles */
-/*::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-primary-light dark:bg-dark-primary;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-primary-dark dark:bg-dark-surface rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-primary-hover opacity-20 dark:bg-dark-hover;
-}
-  */
-
-/* Base styles for links */

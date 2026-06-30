@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { ArrowUp } from 'lucide-react'
+import { styles } from '../settings'
 
 export default function BackToTop() {
   const [isVisible, setIsVisible] = useState(false)
@@ -31,9 +32,9 @@ export default function BackToTop() {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-16 right-8 p-2 rounded-full bg-primary-navbar dark:bg-dark-navbar text-primary-text dark:text-dark-text shadow-lg  hover:bg-primary-hover hover:bg-opacity-80 dark:hover:bg-dark-hover dark:hover:bg-opacity-70 transition-all duration-300"
+          className={styles.buttons.backToTop}
         >
-          <ArrowUp className="h-6 w-6" />
+          <ArrowUp className={styles.buttons.backToTopIcon} />
         </button>
       )}
     </>
