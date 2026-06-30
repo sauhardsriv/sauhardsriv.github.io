@@ -1,4 +1,3 @@
-// src/app/cv/page.js
 import SectionCard from '../components/SectionCard'
 import { assets, pages, styles } from '../settings'
 

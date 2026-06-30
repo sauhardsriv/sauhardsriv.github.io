@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 @layer base {
+  /* Palette custom properties (--primary-*, --dark-*) are injected from site.settings.js
+     via a <style> tag in the root layout, so colors live in one place. */
   body {
     @apply bg-primary-light text-primary-text;
     font-family: var(--font-site), sans-serif;
@@ -10,5 +12,60 @@
 
   .dark body {
     @apply bg-dark-primary text-dark-text;
+  }
+
+  /* M3 focus indicator: visible only for keyboard navigation, not mouse clicks. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--primary-url));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .dark :focus-visible {
+    outline-color: rgb(var(--dark-url));
+  }
+}
+
+/* One-time highlight of the row an in-page (#anchor) link lands on.
+   Ramps up quickly, holds, then fades so it's clearly noticeable. */
+@keyframes target-flash {
+  0% {
+    background-color: transparent;
+  }
+  12% {
+    background-color: rgb(var(--flash-color) / 0.22);
+  }
+  55% {
+    background-color: rgb(var(--flash-color) / 0.22);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.flash-target {
+  --flash-color: var(--primary-url);
+}
+
+.dark .flash-target {
+  --flash-color: var(--dark-url);
+}
+
+/* Fires on initial load when arriving via a shared #anchor deep-link. */
+.flash-target:target {
+  border-radius: 0.5rem;
+  animation: target-flash 1.8s ease-in-out 1;
+}
+
+/* Fires on every click (re-triggered from JS), even if the hash is unchanged. */
+.flash-target.flash-now {
+  border-radius: 0.5rem;
+  animation: target-flash 1.8s ease-in-out 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flash-target:target,
+  .flash-target.flash-now {
+    animation: none;
   }
 }

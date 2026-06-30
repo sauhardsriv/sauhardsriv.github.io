@@ -1,8 +1,8 @@
-import { DM_Sans } from 'next/font/google'
+import { IBM_Plex_Sans } from 'next/font/google'
 
-export const siteFont = DM_Sans({
+export const siteFont = IBM_Plex_Sans({
   subsets: ['latin'],
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  weight: ['100', '200', '300', '400', '500', '600', '700'],
   display: 'swap',
   variable: '--font-site',
 })

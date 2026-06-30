@@ -1,6 +1,9 @@
+import { Fragment } from 'react'
 import { styles } from '../settings'
 
-export default function AbstractDetails({ children, prefix = null }) {
+export default function AbstractDetails({ children, actions = null, prefix = null }) {
+  const items = actions || (prefix ? [prefix] : [])
+
   const icon = (
     <span className={styles.details.icon}>
       <svg className={styles.details.iconSvg} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -12,21 +15,16 @@ export default function AbstractDetails({ children, prefix = null }) {
   return (
     <details className={styles.details.root}>
       <summary className={styles.details.summary}>
-        {prefix ? (
-          <>
-            <span className={styles.details.prefix}>{prefix}</span>
+        {items.map((item, index) => (
+          <Fragment key={index}>
+            <span className={styles.details.prefix}>{item}</span>
             <span className={styles.details.separator} aria-hidden="true">|</span>
-            <span className={styles.details.control}>
-              <span>Abstract</span>
-              {icon}
-            </span>
-          </>
-        ) : (
-          <span className={styles.details.control}>
-            <span>Abstract</span>
-            {icon}
-          </span>
-        )}
+          </Fragment>
+        ))}
+        <span className={styles.details.control}>
+          <span>Abstract</span>
+          {icon}
+        </span>
       </summary>
       <div className={styles.details.content}>
         {children}

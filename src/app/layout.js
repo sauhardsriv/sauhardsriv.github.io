@@ -1,9 +1,8 @@
-// src/app/layout.js
 import './globals.css'
 import Providers from './providers'
 import ClientWrapper from './components/ClientWrapper'
 import { siteFont } from './font'
-import { assets, site, theme } from './settings'
+import { assets, paletteVariablesCss, site, theme } from './settings'
 
 export const metadata = {
   metadataBase: new URL(site.url),
@@ -56,15 +55,21 @@ export const viewport = {
   initialScale: 1,
   colorScheme: 'light dark',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: theme.colors.primary.light },
-    { media: '(prefers-color-scheme: dark)', color: theme.colors.dark.primary },
+    { media: '(prefers-color-scheme: light)', color: theme.palettes[theme.palette]['primary-light'] },
+    { media: '(prefers-color-scheme: dark)', color: theme.palettes[theme.palette]['dark-primary'] },
   ],
 }
 
+const paletteInitScript = `(function(){try{var p=localStorage.getItem('palette');if(p==='m2'||p==='m3'){document.documentElement.setAttribute('data-palette',p);}}catch(e){}})();`
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" data-palette={theme.palette} suppressHydrationWarning>
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: paletteVariablesCss() }} />
+      </head>
       <body className={siteFont.variable}>
+        <script dangerouslySetInnerHTML={{ __html: paletteInitScript }} />
         <Providers>
           <ClientWrapper>
             {children}

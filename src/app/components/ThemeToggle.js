@@ -1,4 +1,3 @@
-// src/app/components/ThemeToggle.js
 'use client'
 
 import { useState, useEffect } from 'react'

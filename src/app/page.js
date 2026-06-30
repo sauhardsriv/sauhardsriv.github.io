@@ -1,8 +1,7 @@
-// src/app/page.js
-import Image from 'next/image'
 import SocialIcons from './components/SocialIcons'
 import SectionCard from './components/SectionCard'
-import { assets, pages, profile, site, socialLinks, styles } from './settings'
+import ProfileImage from './components/ProfileImage'
+import { pages, profile, site, socialLinks, styles } from './settings'
 
 export const metadata = {
   title: {
@@ -59,27 +58,12 @@ export default function Home() {
 
       <article className={styles.homePage}>
         <div className={styles.homeGrid}>
-          {/* Left Panel with profile photo */}
           <aside className={styles.sidebar}>
-            <div className={styles.profileImageFrame}>
-              <Image
-                src={assets.profileImage}
-                alt={assets.profileImageAlt}
-                fill
-                className={styles.profileImage}
-                priority
-                sizes={assets.profileImageSizes}
-              />
-            </div>
-
-            {/* Divider */}
+            <ProfileImage />
             <div className={styles.sidebarDivider}></div>
-
-            {/* Social Icons - Client Component */}
             <SocialIcons />
           </aside>
 
-          {/* Right Content Panel */}
           <main className={styles.contentColumn}>
             <SectionCard title="About Me" titleAs="h1" titleClassName={styles.homeTitle}>
               <div className={styles.bodyCopy}>
