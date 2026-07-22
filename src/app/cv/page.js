@@ -1,57 +1,5 @@
 import SectionCard from '../components/SectionCard'
-import { assets, pages, styles } from '../settings'
-
-const education = [
-  {
-    date: '2027',
-    dateNote: '(expected)',
-    title: 'PhD in Economics',
-    institution: 'University of Minnesota',
-  },
-  {
-    date: '2024',
-    title: 'MA in Economics',
-    institution: 'University of Minnesota',
-  },
-  {
-    date: '2019',
-    title: 'MSc in Economics',
-    institution: 'The London School of Economics and Political Science',
-  },
-  {
-    date: '2018',
-    title: 'BA (Hons.) in Economics',
-    institution: 'Shri Ram College of Commerce, University of Delhi',
-  },
-]
-
-const experience = [
-  {
-    date: 'Sep 2023-present',
-    title: 'Research Analyst',
-    institution: 'Federal Reserve Bank of Minneapolis',
-  },
-  {
-    date: 'Sep 2021-Jul 2023',
-    title: 'Teaching Assistant',
-    institution: 'CLA, University of Minnesota',
-  },
-  {
-    date: 'Jan 2020-Jun 2021',
-    title: 'Research Assistant/Intern',
-    institution: 'Reserve Bank of India',
-  },
-  {
-    date: 'Aug 2019-Dec 2019',
-    title: 'Research Assistant/Intern',
-    institution: 'United Nations Development Programme (UNDP) in India',
-  },
-  {
-    date: 'Sep 2018-May 2019',
-    title: 'Graduate Teaching Assistant',
-    institution: 'Department of Economics, LSE',
-  },
-]
+import { assets, cv, pages, styles } from '../settings'
 
 export const metadata = {
   title: pages.cv.title,
@@ -105,7 +53,7 @@ export default function CV() {
       <div className={styles.sectionStackCompact}>
         <SectionCard title="Education" titleClassName={styles.sectionTitleSpacious}>
           <div className={styles.cvEntryList}>
-            {education.map((entry) => (
+            {cv.education.map((entry) => (
               <CvEntry key={`${entry.title}-${entry.institution}`} entry={entry} />
             ))}
           </div>
@@ -113,7 +61,7 @@ export default function CV() {
 
         <SectionCard title="Professional Experience" titleClassName={styles.sectionTitleSpacious}>
           <div className={styles.cvEntryList}>
-            {experience.map((entry) => (
+            {cv.experience.map((entry) => (
               <CvEntry key={`${entry.title}-${entry.institution}-${entry.date}`} entry={entry} />
             ))}
           </div>

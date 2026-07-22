@@ -9,6 +9,8 @@ export const pages = siteSettings.pages
 export const socialLinks = siteSettings.socialLinks
 export const profile = siteSettings.profile
 export const papers = siteSettings.papers
+export const cv = siteSettings.cv
+export const jobMarket = siteSettings.jobMarket
 export const assets = siteSettings.assets
 export const styles = siteSettings.styles
 

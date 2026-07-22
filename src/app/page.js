@@ -19,6 +19,19 @@ export const metadata = {
   },
 }
 
+function BioParagraph({ content }) {
+  if (typeof content === 'string') return <p>{content}</p>
+  return (
+    <p>
+      {content.map((seg, i) =>
+        typeof seg === 'string' ? seg :
+        seg.bold ? <strong key={i}>{seg.text}</strong> :
+        <a key={i} className={styles.link} href={seg.href} target="_blank" rel="noopener noreferrer">{seg.text}</a>
+      )}
+    </p>
+  )
+}
+
 export default function Home() {
   const structuredData = {
     '@context': 'https://schema.org',
@@ -67,31 +80,9 @@ export default function Home() {
           <main className={styles.contentColumn}>
             <SectionCard title="About Me" titleAs="h1" titleClassName={styles.homeTitle}>
               <div className={styles.bodyCopy}>
-                <p>
-                  Welcome to my academic webpage. I am a PhD candidate in Economics at the{' '}
-                  <a
-                    href="https://cla.umn.edu/economics"
-                    className={styles.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    University of Minnesota
-                  </a>{' '}
-                  and a Research Analyst at the{' '}
-                  <a
-                    href="https://www.minneapolisfed.org/economic-research"
-                    className={styles.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Federal Reserve Bank of Minneapolis
-                  </a>
-                  {'. '}
-                  <strong>I am on the 2026-27 economics job market.</strong>
-                </p>
-                <p>
-                  My primary research interests include macroeconomics, international economics, and monetary economics with a particular focus on financial markets and theory-informed optimal policy analysis in dynamic general equilibrium models. My current research incorporates financial frictions, exchange rate dynamics, and household heterogeneity to examine how these features shape equilibrium outcomes.
-                </p>
+                {profile.bio.map((para, i) => (
+                  <BioParagraph key={i} content={para} />
+                ))}
               </div>
             </SectionCard>
           </main>

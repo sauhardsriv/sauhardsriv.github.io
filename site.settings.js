@@ -1,17 +1,30 @@
-const siteSettings = {
-  site: {
-    name: 'Sauhard Srivastava',
-    url: 'https://sauhardsriv.github.io',
-    locale: 'en_US',
-    author: 'Sauhard Srivastava',
-    description: 'Academic portfolio and research work in economics by Sauhard Srivastava, PhD candidate in Economics at the University of Minnesota',
-    keywords: ['Sauhard Srivastava', 'economics job market', '2026-2027 economics job market', 'macroeconomics', 'international macroeconomics', 'monetary economics', 'exchange rates', 'financial frictions'],
-    license: {
-      label: 'CC BY-NC 4.0',
-      url: 'https://creativecommons.org/licenses/by-nc/4.0/',
-    },
-  },
+// ─────────────────────────────────────────────────────────────────────────────
+//  TEMPLATE SETTINGS
+//  Controls theme, colors, layout styles, navigation structure, and page
+//  metadata. User content (bio, papers, CV, job market) lives in content.js.
+//  Fork users should not need to edit this file for normal use.
+// ─────────────────────────────────────────────────────────────────────────────
 
+const content = require('./content')
+
+// Font size scale — documented here for reference; values are hardcoded in the
+// style strings below because Tailwind's static scanner cannot resolve template
+// literals. Change the hardcoded value in each style string to adjust sizes.
+//   h1 (page titles):        21px
+//   h2 (section headings):   18px
+//   featured (paper titles): 16px
+//   body (main content):     15px
+//   action (links/summaries):14px
+//   secondary (venues/dates):13px
+//   small (metadata lines):  12px
+
+const siteSettings = {
+  ...content,
+
+  // ── Theme ─────────────────────────────────────────────────────────────────
+  // Palette tokens (primary-* = light mode, dark-* = dark mode) feed CSS custom
+  // properties consumed by Tailwind. All color changes happen here only.
+  // To switch palettes at runtime: localStorage.setItem('palette', 'm2')
   theme: {
     darkMode: 'class',
     providerAttribute: 'class',
@@ -19,11 +32,7 @@ const siteSettings = {
     enableSystem: true,
     disableTransitionOnChange: true,
     storageKey: 'theme',
-    // Active palette key from `palettes` below. Override at runtime via localStorage('palette').
     palette: 'm3',
-    // Every palette defines the same token set. Values feed CSS custom properties consumed by
-    // Tailwind (see tailwind.config.js), so this is the single place colors are defined.
-    // `primary-*` tokens apply in light mode, `dark-*` tokens in dark mode.
     palettes: {
       m3: {
         'primary-light': '#F9F9FF',
@@ -70,26 +79,34 @@ const siteSettings = {
     },
   },
 
+  // ── Navigation ────────────────────────────────────────────────────────────
+  // Derived from content — add or rename links here if you add new pages.
   navigation: [
     { href: '/', label: 'Home' },
     { href: '/research', label: 'Research' },
     { href: '/cv', label: 'CV' },
+    ...(content.jobMarket.active ? [{ href: '/job-market', label: 'Job Market' }] : []),
   ],
 
+  // ── Page metadata ─────────────────────────────────────────────────────────
+  // Titles, descriptions, and keywords for each route. Descriptions and keywords
+  // are derived from content so they stay accurate without manual updates.
   pages: {
     home: {
       title: 'Home',
       path: '/',
-      description: 'Academic portfolio and research work in economics by Sauhard Srivastava, PhD candidate in Economics at the University of Minnesota',
-      keywords: ['Sauhard Srivastava', 'economics job market', '2026-2027 economics job market', 'macroeconomics', 'international macroeconomics', 'monetary economics', 'exchange rates', 'financial frictions'],
+      description: content.site.description,
+      keywords: content.site.keywords,
     },
     research: {
       title: 'Research',
       path: '/research',
-      description: 'Research papers by Sauhard Srivastava in macroeconomics, international macroeconomics, exchange rates, financial frictions, and monetary economics',
-      keywords: ['Sauhard Srivastava research', 'economics research papers', 'macroeconomics', 'international macroeconomics', 'monetary economics', 'exchange rates', 'financial frictions'],
-      // Heading for the featured panel, and the ordered list of paper sections.
-      // Each section renders the papers whose `section` field matches its `key`.
+      description: `Research papers by ${content.site.author} in ${content.profile.fields.map(f => f.toLowerCase()).join(', ')}`,
+      keywords: [
+        `${content.site.author} research`,
+        'economics research papers',
+        ...content.profile.fields.map(f => f.toLowerCase()),
+      ],
       featuredTitle: 'Featured',
       sections: [
         { key: 'workingPapers', title: 'Working Papers' },
@@ -99,122 +116,26 @@ const siteSettings = {
     cv: {
       title: 'CV',
       path: '/cv',
-      description: 'Academic curriculum vitae, education, and professional experience',
-      keywords: ['CV', 'education', 'experience', 'academic', 'economics'],
+      description: `Academic curriculum vitae of ${content.site.author}: education, research experience, and publications`,
+      keywords: ['CV', 'curriculum vitae', content.site.author, ...content.profile.fields.map(f => f.toLowerCase())],
+    },
+    jobMarket: {
+      title: 'Job Market',
+      path: '/job-market',
+      description: `Job market information for ${content.site.author}, a ${content.profile.jobMarket} candidate: job market paper, CV, and references.`,
+      keywords: [
+        `${content.site.author} job market`,
+        'economics job market candidate',
+        content.profile.jobMarket,
+        'job market paper',
+        ...content.profile.fields.map(f => f.toLowerCase()),
+      ],
     },
   },
 
-  socialLinks: [
-    { type: 'email', label: 'Email', emailUser: 'sauhardsrivastava', emailDomain: 'gmail.com' },
-    { type: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/sauhard-srivastava/' },
-    { type: 'github', label: 'GitHub', href: 'https://github.com/sauhardsriv' },
-    { type: 'x', label: 'X', href: 'https://x.com/sauhardsriv' },
-  ],
-
-  profile: {
-    title: 'PhD candidate in Economics',
-    affiliation: 'University of Minnesota',
-    employer: 'Federal Reserve Bank of Minneapolis',
-    jobMarket: '2026-2027 economics job market',
-    fields: [
-      'Macroeconomics',
-      'International Macroeconomics',
-      'Monetary Economics',
-      'Exchange Rates',
-      'Financial Frictions',
-      'Heterogeneous Agent Models',
-    ],
-  },
-
-  // To add a paper, copy an entry below. Required: slug, section, title, authors, abstract.
-  // Optional: doiUrl / pdf (the title links to whichever is present), code, links[],
-  // venue + citation, note (secondary line), coauthorLinks, keywords, doi, and
-  // featured + highlightLabel + summary (+ featuredNote) to surface it in the Featured panel.
-  papers: [
-    {
-      slug: 'import-price-spikes-exchange-rates',
-      section: 'workingPapers',
-      title: 'Import Price Spikes and Real Income Stabilization through Exchange Rates in a Heterogeneous Agent Economy',
-      authors: ['Sauhard Srivastava'],
-      note: 'Draft Available Soon',
-      featured: true,
-      highlightLabel: 'Featured working paper',
-      summary: 'Optimal exchange rate and monetary policies in a heterogeneous-agent small open economy facing essential import price spikes.',
-      abstract: 'This paper characterizes the jointly optimal exchange rate and monetary policies under commitment in a heterogeneous-agent, import-dependent small open economy facing price spikes. When some agents are borrowing constrained, and the economy faces an import price shock, exchange rate management becomes a tool for real income stabilization through the intertemporal margin, while optimal monetary policy targets the labor wedge. In an open economy, these roles are not substitutable. In the presence of financial frictions, optimal exchange rate policy requires temporary interest parity deviations to stabilize import prices and real incomes. At the same time, monetary policy through the labor wedge cuts inflation. We illustrate that a Ramsey planner internalizes pecuniary general equilibrium effects of exchange rates to redistribute real incomes: facing an import price spike, the planner chooses to lean against the associated exchange rate depreciation to cut exports and redistribute real resources toward the borrowing-constrained agents through their real wages. A quantitative two-agent model calibrated to Japan facing an energy price shock shows that constrained optimal policy delivers significant real income and welfare gains over laissez-faire and Taylor-rule policies. This policy is implementable jointly through foreign exchange interventions and inflation targeting.',
-      keywords: ['exchange rates', 'import price shocks', 'real income stabilization', 'heterogeneous agents', 'small open economy', 'monetary policy', 'financial frictions'],
-    },
-    {
-      slug: 'financial-frictions-fx-reserves-exchange-rate-management',
-      section: 'publications',
-      title: 'Financial Frictions, FX Reserves, and Exchange Rate Management in Emerging Economies',
-      authors: ['Sauhard Srivastava'],
-      featured: true,
-      highlightLabel: 'Accepted article',
-      summary: 'Why debtor economies may simultaneously hold FX reserves with local-currency liabilities despite carry costs.',
-      featuredNote: 'Aug 2026',
-      venue: 'Journal of International Economics',
-      citation: 'Vol. 162, Article 104282, August 2026.',
-      doi: '10.1016/j.jinteco.2026.104282',
-      doiUrl: 'https://doi.org/10.1016/j.jinteco.2026.104282',
-      pdf: '/papers/reserves2024.pdf',
-      code: 'https://doi.org/10.17632/s6h8vj9z3k.1',
-      abstract: 'Emerging economy central banks often hold large FX reserves while residents carry substantial local-currency-linked external liabilities. With financial frictions creating interest parity gaps, such opposing positions imply a carry cost. In a small open economy with intermediation frictions and inherited local-currency debt, we study optimal reserve and exchange rate policies, explaining why debtor economies may retain reserves rather than netting out costly gross positions. While policy can eliminate costly intermediation by deploying reserves and appreciating the real exchange rate, doing so creates a general equilibrium revaluation effect which raises the real burden of local-currency obligations. Optimal policy retains reserves, accepting some intermediation to avoid a larger revaluation loss. This policy is time-inconsistent: a discretionary central bank prefers stronger ex-post appreciation; a time-consistent equilibrium features more reserve retention and larger interest parity gaps. Revaluation costs restrain reserve deployment; when large, optimal policy retains more reserves during disruptions than in normal times.',
-      keywords: ['FX reserves', 'exchange rate management', 'financial frictions', 'emerging economies', 'interest parity gaps', 'local-currency debt', 'central banks'],
-    },
-    {
-      slug: 'net-zero-small-open-economy',
-      section: 'workingPapers',
-      title: 'The Transition to Net Zero in a Small Open Economy',
-      authors: ['Sauhard Srivastava', 'Neil Mehrotra'],
-      coauthorLinks: {
-        'Neil Mehrotra': 'https://sites.google.com/site/neilrmehrotra/',
-      },
-      pdf: 'https://drive.google.com/file/d/1t-vdiOhsgqmXOeoc4e9UwTRG7-6BqJsU/view',
-      abstract: 'This paper examines the macroeconomic cost and implications of transitioning to net zero for a fossil-fuel-dependent, small open economy. A net zero target operates as an anticipated negative productivity shock that lowers consumption, raises the current account surplus along the transition path, and has ambiguous effects on the real exchange rate. A transition to net zero appreciates the currency by lowering the import bill for fossil fuels, but depreciates the currency by making domestic tradables more expensive. We calibrate the model to the case of Japan and find that the transition to net zero lowers consumption by 0.2-2%.',
-      keywords: ['net zero', 'small open economy', 'fossil fuels', 'real exchange rate', 'current account', 'Japan', 'climate transition'],
-    },
-    {
-      slug: 'price-of-quality-penn-effect',
-      section: 'workingPapers',
-      title: 'The Price of Quality: Demand-Driven Technology Choice and the Penn Effect',
-      authors: ['Sauhard Srivastava'],
-      pdf: '/papers/hbs_new2025.pdf',
-      abstract: 'This paper proposes a novel, demand-side explanation for the Penn effect: the observation that richer countries systematically exhibit higher price levels. We develop a general equilibrium model where income-dependent preferences lead more productive countries to produce and consume higher-quality, more resource-intensive non-tradeable goods. Our key result is that this endogenous shift toward producing superior goods, which have higher unit factor requirements, outweighs the standard cost-reducing effects of productivity growth, resulting in higher prices. The model shows that quality upgrading emerges as an equilibrium response to rising incomes and leads to higher non-tradeable prices in richer economies even in the absence of Harrod-Balassa-Samuelson (HBS) effects. Using Penn World Table data, the model replicates the empirical Penn effect, explaining about 69 percent of cross-country price variation without relying on HBS effects.',
-      keywords: ['Penn effect', 'quality upgrading', 'non-tradeable goods', 'technology choice', 'income-dependent preferences', 'price levels', 'Penn World Table'],
-    },
-    {
-      slug: 'productivity-real-exchange-rates-india-balassa-samuelson',
-      section: 'publications',
-      title: 'Productivity and real exchange rates for India: does Balassa-Samuelson effect explain?',
-      authors: ['Sauhard Srivastava', 'Saurabh Ghosh', 'Siddhartha Nath'],
-      venue: 'Indian Growth and Development Review',
-      citation: 'Vol. 16 No. 1, pp. 41-73, March 2023.',
-      doi: '10.1108/IGDR-11-2022-0130',
-      doiUrl: 'https://doi.org/10.1108/IGDR-11-2022-0130',
-      abstract: 'This study explores the long-run equilibrium relationship between India’s real exchange rate and sectoral productivity trends using internationally comparable KLEMS productivity databases for India, China, the euro area, the USA, the UK, and Japan. This study uses pooled mean group estimations for panel data, as suggested by Pesaran et al. (1999). The results support an “extended” Balassa-Samuelson (BS) hypothesis, which allows for labour market frictions that prevent wage equalisation between traded and non-traded sectors within a country. This mechanism continues to find support when we separate out the distribution sector, which comprises wholesale and retail trade in the domestic services sector. The empirical evidence suggests that India’s real exchange rate is anchored to domestic fundamentals and is closely aligned with its fair value over a medium- to long-term horizon.',
-      keywords: ['real exchange rates', 'India', 'Balassa-Samuelson effect', 'sectoral productivity', 'KLEMS', 'labour market frictions'],
-    },
-    {
-      slug: 'labour-disputes-manufacturing-growth-indian-states',
-      section: 'publications',
-      title: 'Labour Disputes and the Manufacturing Sector’s Growth: Recent Evidence from Indian States',
-      authors: ['Sauhard Srivastava', 'Siddhartha Nath'],
-      venue: 'Theoretical Economics Letters',
-      citation: 'Vol. 12 No. 3, pp. 636-663, June 2022.',
-      doi: '10.4236/tel.2022.123036',
-      doiUrl: 'https://doi.org/10.4236/tel.2022.123036',
-      abstract: 'The persistent variation among Indian states in per-capita value added from the manufacturing sector raises the question of whether the long-run equilibrium in the manufacturing sector differs across states. In this paper, we provide empirical evidence on whether labour disputes in the form of strikes, lockouts, temporary closures, and related disruptions have caused variation in these equilibria in the recent period. Available data suggest that in 9 out of 16 states in our sample, labour disputes generally declined between 2001 and 2017, while in others, labour disputes were mostly characterised as random shocks with little predictability. Our two-stage least squares estimates, using states’ election cycles as an instrument for labour disputes, suggest that these low-persistence labour disputes did not have much influence over inter-state differences in equilibrium capital-labour ratios in “registered” manufacturing units between 2001 and 2017. However, a 1 percent increase in labour disputes might be associated with a 3.2 percent reduction in total factor productivity for the sector in states where disputes were random events. In the remaining states, where labour disputes have consistently fallen over time, this effect is significantly reduced. Our findings are robust in a different sample of firms.',
-      keywords: ['labour disputes', 'manufacturing', 'Indian states', 'capital-labour ratios', 'total factor productivity', 'two-stage least squares'],
-    },
-  ],
-
-  assets: {
-    profileImage: '/profile.png',
-    profileImageAlt: 'Sauhard Srivastava profile photo',
-    profileImageSizes: '(max-width: 768px) 144px, 192px',
-    cvPdf: '/resume/resume-web.pdf',
-  },
-
+  // ── Styles ────────────────────────────────────────────────────────────────
+  // Shared Tailwind class strings consumed by every page and component.
+  // Colors reference CSS custom properties defined in theme.palettes above.
   styles: {
     shell: 'flex flex-col min-h-screen',
     appBackground: 'min-h-screen',
@@ -240,19 +161,19 @@ const siteSettings = {
     homeTitle: 'text-primary-text dark:text-dark-text text-[21px] font-semibold mb-4',
     sectionTitle: 'text-[18px] font-semibold mb-3',
     sectionTitleSpacious: 'text-[18px] font-semibold mb-4',
-    bodyCopy: 'text-primary-text dark:text-dark-text text-[16px] text-justify leading-[1.85] space-y-4',
+    bodyCopy: 'text-primary-text dark:text-dark-text text-[15px] text-justify leading-[1.85] space-y-4',
     link: 'text-primary-url dark:text-dark-url hover:text-primary-url-hover dark:hover:text-dark-url-hover',
     pdfLink: 'text-primary-url dark:text-dark-url hover:text-primary-url-hover dark:hover:text-dark-url-hover font-bold',
     inlineLink: 'text-primary-url dark:text-dark-url hover:text-primary-url-hover dark:hover:text-dark-url-hover ml-2 font-semibold',
-    list: 'list-disc ml-6 space-y-6 text-[16px] font-normal',
+    list: 'list-disc ml-6 space-y-6 text-[15px] font-normal',
     cvEntryList: 'divide-y divide-primary-text/15 dark:divide-dark-text/20',
-    cvEntry: 'grid gap-1 py-4 first:pt-1 last:pb-1 sm:grid-cols-[minmax(8rem,10rem)_1fr] sm:gap-6',
-    cvDate: 'text-[14px] text-primary-variant dark:text-dark-variant leading-relaxed',
+    cvEntry: 'grid gap-1 py-2.5 first:pt-1 last:pb-1 sm:grid-cols-[minmax(8rem,10rem)_1fr] sm:gap-6',
+    cvDate: 'text-[13px] text-primary-variant dark:text-dark-variant leading-relaxed',
     cvDateNote: 'text-xs leading-relaxed text-primary-variant dark:text-dark-variant',
     cvEntryBody: 'space-y-1',
-    cvEntryTitle: 'text-[16px] leading-snug font-medium text-primary-text dark:text-dark-text',
-    cvEntryInstitution: 'text-[15px] leading-relaxed text-primary-variant dark:text-dark-variant',
-    compactList: 'list-disc ml-6 space-y-2 text-[16px] font-normal',
+    cvEntryTitle: 'text-[15px] leading-snug font-medium text-primary-text dark:text-dark-text',
+    cvEntryInstitution: 'text-[13px] leading-relaxed text-primary-variant dark:text-dark-variant',
+    compactList: 'list-disc ml-6 space-y-2 text-[15px] font-normal',
     sectionStack: 'space-y-8',
     sectionStackCompact: 'space-y-6',
     itemStack: 'space-y-0.5',
@@ -290,7 +211,7 @@ const siteSettings = {
       control: 'inline-flex items-center gap-2 opacity-65 dark:opacity-70 hover:opacity-90 dark:hover:opacity-90 transition-opacity',
       icon: 'transform transition-transform group-open:rotate-180',
       iconSvg: 'w-4 h-4',
-      content: 'mt-2 pl-6 text-[13px] text-primary-variant dark:text-dark-variant leading-relaxed',
+      content: 'mt-2 pl-6 text-[13px] text-primary-variant dark:text-dark-variant leading-relaxed text-justify',
     },
 
     navbar: {
@@ -299,7 +220,7 @@ const siteSettings = {
         'text-primary-text dark:text-dark-text py-2 text-sm sm:text-base transition-shadow duration-300',
         'hover:shadow-[0_4px_16px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_4px_16px_rgba(255,255,255,0.2)]',
       ].join(' '),
-      container: 'container mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 px-4 lg:px-16',
+      container: 'container relative mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 px-4 lg:px-16',
       brand: 'text-lg sm:text-xl md:text-2xl font-medium hover:text-primary-hover dark:hover:text-dark-hover text-primary-text dark:text-dark-text transition-colors duration-0 text-center sm:text-left',
       rightGroup: 'flex items-center justify-center',
       links: 'flex items-center justify-center flex-wrap gap-x-3 gap-y-1 sm:gap-x-4',
@@ -307,8 +228,8 @@ const siteSettings = {
       linkActive: 'font-semibold',
       linkInactive: 'font-normal',
       activeIndicator: 'absolute bottom-0 left-0 w-full h-0.5 bg-primary-url dark:bg-dark-url',
-      actions: 'flex items-center ml-3 sm:ml-6',
-      divider: 'h-6 w-px bg-primary-text dark:bg-dark-text opacity-20 mx-2',
+      actions: 'absolute top-2 right-4 sm:static sm:ml-6 flex items-center opacity-70 sm:opacity-100',
+      divider: 'hidden sm:block h-6 w-px bg-primary-text dark:bg-dark-text opacity-20 mx-2',
     },
 
     footer: {
@@ -330,15 +251,29 @@ const siteSettings = {
       themeIcon: 'h-5 w-5 text-primary-text dark:text-dark-text',
       backToTop: 'fixed bottom-16 right-8 p-2 rounded-full bg-primary-navbar dark:bg-dark-navbar text-primary-text dark:text-dark-text shadow-lg hover:bg-primary-hover/80 dark:hover:bg-dark-hover/70 transition-all duration-300',
       backToTopIcon: 'h-6 w-6',
+      primary: 'inline-flex items-center gap-2 rounded-full bg-primary-url dark:bg-dark-url text-primary-light dark:text-dark-primary px-5 py-2.5 text-sm font-semibold hover:bg-primary-url-hover dark:hover:bg-dark-url-hover transition-colors',
+    },
+
+    jobMarket: {
+      actions: 'mt-4 flex flex-wrap gap-3',
+      paperTitle: 'text-[17px] leading-snug font-medium mb-1',
+      abstractWrap: 'mt-2 mb-1',
+      researchLink: 'mt-4 text-[14px]',
+      cvNote: 'text-[13px] leading-relaxed text-primary-variant dark:text-dark-variant -mt-2 mb-1',
+      referenceList: 'grid gap-5 sm:grid-cols-3',
+      referenceItem: 'flex flex-col gap-1 min-w-0',
+      referenceName: 'text-[15px] font-semibold text-primary-text dark:text-dark-text',
+      referenceInstitution: 'text-[13px] text-primary-variant dark:text-dark-variant break-words',
+      referenceLink: 'text-[13px] text-primary-url dark:text-dark-url hover:text-primary-url-hover dark:hover:text-dark-url-hover pt-1',
     },
 
     notFound: {
-      root: 'flex flex-col items-center justify-center min-h-[calc(100vh-8rem)] py-16 overflow-hidden',
-      icon: 'text-primary-text dark:text-dark-text text-[50pt] md:text-[75pt] lg:text-[90pt] font-semibold mb-12',
-      title: 'text-primary-text dark:text-dark-text text-2xl md:text-3xl lg:text-4xl font-semibold mb-5 text-center',
-      message: 'text-primary-text dark:text-dark-text opacity-60 dark:opacity-50 text-xl md:text-2xl lg:text-2xl font-normal mb-6 text-center',
-      button: 'flex items-center bg-primary-main dark:bg-dark-surface text-primary-text dark:text-dark-text opacity-80 dark:opacity-70 hover:text-primary-hover dark:hover:text-dark-hover transition-all duration-200 px-6 py-3 rounded-3xl text-lg md:text-xl lg:text-xl font-medium hover:bg-primary-hover/10 dark:hover:bg-dark-hover/20',
-      buttonIcon: 'mr-2 h-5 w-5',
+      root: 'flex flex-col items-center justify-center min-h-[calc(100vh-8rem)] py-16 overflow-hidden text-center',
+      icon: 'text-primary-text dark:text-dark-text text-[40px] font-semibold mb-6',
+      title: 'text-primary-text dark:text-dark-text text-[21px] font-semibold mb-3',
+      message: 'text-primary-text dark:text-dark-text opacity-60 dark:opacity-50 text-[15px] font-normal mb-6',
+      button: 'inline-flex items-center gap-2 rounded-full bg-primary-url dark:bg-dark-url text-primary-light dark:text-dark-primary px-5 py-2.5 text-sm font-semibold hover:bg-primary-url-hover dark:hover:bg-dark-url-hover transition-colors',
+      buttonIcon: 'h-4 w-4',
     },
   },
 }
