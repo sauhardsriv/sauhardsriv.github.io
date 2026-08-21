@@ -5,7 +5,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Set to false after the job market cycle ends — hides the page and navbar link.
-const jobMarketActive = false
+const jobMarketActive = true
 
 const content = {
 
@@ -153,10 +153,10 @@ const content = {
   // Each entry: date, title, institution. Optional: dateNote, note.
   cv: {
     education: [
-      { date: '2027', dateNote: '(expected)', title: 'PhD in Economics', institution: 'University of Minnesota' },
-      { date: '2024', title: 'MA in Economics', institution: 'University of Minnesota' },
-      { date: '2019', title: 'MSc in Economics', institution: 'The London School of Economics and Political Science' },
-      { date: '2018', title: 'BA (Hons.) in Economics', institution: 'Shri Ram College of Commerce, University of Delhi' },
+      { date: '2027', dateNote: '(expected)', title: 'Ph.D. Economics', institution: 'University of Minnesota' },
+      { date: '2024', title: 'M.A. Economics', institution: 'University of Minnesota' },
+      { date: '2019', title: 'M.Sc. Economics', institution: 'The London School of Economics and Political Science' },
+      { date: '2018', title: 'B.A. (Hons.) Economics', institution: 'Shri Ram College of Commerce, University of Delhi' },
     ],
     experience: [
       { date: 'Sep 2023–present', title: 'Research Analyst', institution: 'Federal Reserve Bank of Minneapolis' },
