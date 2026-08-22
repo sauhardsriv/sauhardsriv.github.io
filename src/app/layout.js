@@ -1,7 +1,7 @@
 import './globals.css'
 import Providers from './providers'
 import ClientWrapper from './components/ClientWrapper'
-import { siteFont } from './font'
+import { displayFont, siteFont } from './font'
 import { assets, paletteVariablesCss, site, theme } from './settings'
 
 export const metadata = {
@@ -48,6 +48,7 @@ export const metadata = {
       'max-video-preview': -1,
     },
   },
+  verification: site.verification,
 }
 
 export const viewport = {
@@ -55,20 +56,21 @@ export const viewport = {
   initialScale: 1,
   colorScheme: 'light dark',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: theme.palettes[theme.palette]['primary-light'] },
-    { media: '(prefers-color-scheme: dark)', color: theme.palettes[theme.palette]['dark-primary'] },
+    { media: '(prefers-color-scheme: light)', color: theme.palettes[theme.palette]['light-surface'] },
+    { media: '(prefers-color-scheme: dark)', color: theme.palettes[theme.palette]['dark-surface'] },
   ],
 }
 
-const paletteInitScript = `(function(){try{var p=localStorage.getItem('palette');if(p==='m2'||p==='m3'){document.documentElement.setAttribute('data-palette',p);}}catch(e){}})();`
+const paletteNames = JSON.stringify(Object.keys(theme.palettes))
+const paletteInitScript = `(function(){try{var p=localStorage.getItem('palette');if(${paletteNames}.indexOf(p)!==-1){document.documentElement.setAttribute('data-palette',p);}}catch(e){}})();`
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-palette={theme.palette} suppressHydrationWarning>
+    <html lang={site.language || 'en'} data-palette={theme.palette} suppressHydrationWarning>
       <head>
         <style dangerouslySetInnerHTML={{ __html: paletteVariablesCss() }} />
       </head>
-      <body className={siteFont.variable}>
+      <body className={`${siteFont.variable} ${displayFont.variable}`}>
         <script dangerouslySetInnerHTML={{ __html: paletteInitScript }} />
         <Providers>
           <ClientWrapper>

@@ -28,8 +28,7 @@ export default function ProfileImage() {
         className={`${styles.profileImage} transition-opacity duration-300 opacity-0 dark:opacity-100`}
         {...imageProps}
       />
-      {/* Transparent overlay: makes right-click / drag target a div, not the <img>,
-          so the browser offers no "Save image" / "Open image" options. */}
+      {/* Prevent direct pointer interaction with the rendered images. */}
       <div
         className={styles.profileImageGuard}
         aria-hidden="true"

@@ -13,6 +13,7 @@ export default function Navbar() {
     return (
       <Link
         href={href}
+        aria-current={isActive ? 'page' : undefined}
         className={`${styles.navbar.linkBase} ${isActive ? styles.navbar.linkActive : styles.navbar.linkInactive}`}
       >
         {children}

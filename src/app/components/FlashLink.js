@@ -1,12 +1,16 @@
 'use client'
 
-// In-page link that scrolls to a paper row and flashes it, without changing the URL hash.
+// In-page link that reveals a paper's abstract, scrolls to its row, and flashes it
+// without changing the URL hash.
 export default function FlashLink({ targetId, className, children }) {
   const handleClick = (event) => {
     const el = document.getElementById(targetId)
     if (!el) return
 
     event.preventDefault()
+    const abstract = el.querySelector('details')
+    if (abstract) abstract.open = true
+
     el.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
     // Remove, force a reflow, then re-add so the animation replays on every click.

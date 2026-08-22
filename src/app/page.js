@@ -1,7 +1,8 @@
+import Link from 'next/link'
 import SocialIcons from './components/SocialIcons'
 import SectionCard from './components/SectionCard'
 import ProfileImage from './components/ProfileImage'
-import { pages, profile, site, socialLinks, styles } from './settings'
+import { jobMarket, pages, profile, site, socialLinks, styles } from './settings'
 
 export const metadata = {
   title: {
@@ -83,6 +84,18 @@ export default function Home() {
                 {profile.bio.map((para, i) => (
                   <BioParagraph key={i} content={para} />
                 ))}
+                {jobMarket.active && jobMarket.homeStatus && jobMarket.homeLink && (
+                  <p>
+                    <strong>
+                      {jobMarket.homeStatus}{' '}
+                      {jobMarket.homeLink.text}{' '}
+                      <Link className={styles.link} href={pages.jobMarket.path}>
+                        {jobMarket.homeLink.label}
+                      </Link>
+                      .
+                    </strong>
+                  </p>
+                )}
               </div>
             </SectionCard>
           </main>

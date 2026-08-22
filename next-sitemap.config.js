@@ -1,9 +1,9 @@
 /** @type {import('next-sitemap').IConfig} */
 const fs = require('fs');
 const path = require('path');
-const { site } = require('./site.settings');
+const { jobMarket, site } = require('./site.settings');
 
-// Function to recursively get all PDF files from public directory
+// Returns every PDF path under public/ for inclusion in the sitemap.
 function getAllPDFs(dirPath = 'public', arrayOfFiles = []) {
   const files = fs.readdirSync(dirPath);
 
@@ -13,11 +13,10 @@ function getAllPDFs(dirPath = 'public', arrayOfFiles = []) {
     if (fs.statSync(filePath).isDirectory()) {
       getAllPDFs(filePath, arrayOfFiles);
     } else if (path.extname(file).toLowerCase() === '.pdf') {
-      // Convert file path to URL path by removing 'public' and replacing backslashes
-      const urlPath = filePath
+      const urlPath = encodeURI(filePath
         .replace('public', '')
         .split(path.sep)
-        .join('/');
+        .join('/'));
       arrayOfFiles.push(urlPath);
     }
   });
@@ -29,11 +28,10 @@ module.exports = {
   siteUrl: process.env.SITE_URL || site.url,
   generateRobotsTxt: true,
   generateIndexSitemap: false,
-  exclude: ['/404'],
+  exclude: ['/404', ...(jobMarket.active ? [] : ['/job-market'])],
   additionalPaths: async (config) => {
     const result = [];
     
-    // Automatically detect all PDFs in public folder
     const pdfPaths = getAllPDFs();
     
     for (const pdf of pdfPaths) {

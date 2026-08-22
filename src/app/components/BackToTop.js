@@ -33,6 +33,8 @@ export default function BackToTop() {
         <button
           onClick={scrollToTop}
           className={styles.buttons.backToTop}
+          type="button"
+          aria-label="Back to top"
         >
           <ArrowUp className={styles.buttons.backToTopIcon} />
         </button>
