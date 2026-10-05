@@ -1,11 +1,11 @@
 // ─────────────────────────────────────────────────────────────────────────────
-//  USER CONTENT
-//  Edit this file to personalise the site. No other file needs to be touched
-//  for normal use. See README.md for field-by-field documentation.
+//  SITE CONTENT
+//  Identity, copy, links, documents, and records rendered by the template.
+//  Field definitions and examples are documented in README.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Set to false after the job market cycle ends — hides the page and navbar link.
-const jobMarketActive = true
+// Set to false after the job market cycle ends to disable job-market-specific UI.
+const jobMarketActive = false
 
 const content = {
 
@@ -14,12 +14,16 @@ const content = {
     name: 'Sauhard Srivastava',
     url: 'https://sauhardsriv.github.io',
     author: 'Sauhard Srivastava',
+    language: 'en',
     locale: 'en_US',
     description: 'Academic portfolio and research work in economics by Sauhard Srivastava, PhD candidate in Economics at the University of Minnesota',
     keywords: ['Sauhard Srivastava', 'economics job market', '2026-2027 economics job market', 'macroeconomics', 'international macroeconomics', 'monetary economics', 'exchange rates', 'financial frictions'],
     license: {
       label: 'CC BY-NC 4.0',
       url: 'https://creativecommons.org/licenses/by-nc/4.0/',
+    },
+    verification: {
+      google: 'google1c699124076149cf',
     },
   },
 
@@ -47,8 +51,7 @@ const content = {
         { text: 'University of Minnesota', href: 'https://cla.umn.edu/economics' },
         ' and a Research Analyst at the ',
         { text: 'Federal Reserve Bank of Minneapolis', href: 'https://www.minneapolisfed.org/economic-research' },
-        '. ',
-        { text: 'I am on the 2026-27 economics job market.', bold: true },
+        '.',
       ],
       'My primary research interests include macroeconomics, international economics, and monetary economics with a particular focus on financial markets and theory-informed optimal policy analysis in dynamic general equilibrium models. My current research incorporates financial frictions, exchange rate dynamics, and household heterogeneity to examine how these features shape equilibrium outcomes.',
     ],
@@ -66,9 +69,10 @@ const content = {
 
   // ── Research papers ───────────────────────────────────────────────────────
   // Required per entry: slug, section, title, authors, abstract.
-  // Optional: doiUrl, pdf, code, links[], venue, citation, doi, note, coauthorLinks, keywords,
+  // Optional: doiUrl, pdf, code, links[], venue, citation, doi, note, tag, coauthorLinks, keywords,
   //           featured, highlightLabel, summary, featuredNote.
-  // The title links to: doiUrl → pdf → links[0] → plain text (in that priority order).
+  // Titles remain plain text. Available resources render as Journal | PDF | Code | Abstract;
+  // Journal uses doiUrl for publications, while custom links retain their supplied labels.
   // Set featured:true to surface the paper in the Featured panel on the Research page.
   papers: [
     {
@@ -76,8 +80,10 @@ const content = {
       section: 'workingPapers',
       title: 'Import Price Shocks, FX-Monetary Policies, and Real Income Stabilization',
       authors: ['Sauhard Srivastava'],
-      //note: 'Draft Available Soon',
+      tag: { label: 'Job Market Paper', jobMarketOnly: true },
       featured: true,
+      featuredImage: '/papers/hasoe_imports2026.png',
+      featuredImageAlt: 'Preview image for the job market paper',
       pdf: '/papers/hasoe_imports2026.pdf',
       highlightLabel: 'Featured working paper',
       summary: 'Optimal exchange rate and monetary policies in a heterogeneous-agent small open economy facing essential import price spikes.',
@@ -178,14 +184,21 @@ const content = {
   },
 
   // ── Job Market ────────────────────────────────────────────────────────────
-  // Temporary hub for the hiring cycle. Set jobMarketActive = false (line 7) to
-  // hide the page and navbar link after the cycle ends.
+  // Set jobMarketActive to false to disable all job-market-specific UI.
   jobMarket: {
     active: jobMarketActive,
+    homeStatus: 'I am on the 2026-27 economics job market.',
+    homeLink: {
+      text: 'See my job market paper',
+      label: 'here',
+    },
     jmpSlug: 'import-price-spikes-exchange-rates',   // must match a paper slug above
     jmpPdf: '/papers/hasoe_imports2026.pdf',
-    cvPdf: '/resume/job-market-cv.pdf',
+    cvPdf: '/resume/Sauhard%20Srivastava.pdf',
+    cvDescription: 'A PDF of my current job-market curriculum vitae.',
     placementUrl: 'https://cla.umn.edu/economics/people/job-market-candidates',
+    placementLabel: 'University of Minnesota placement information ↗',
+    placementDescription: 'Placement information, including contact details for the placement coordinator and directors.',
     pitch: 'I am on the 2026-27 economics job market. My job market paper studies optimal exchange rate and monetary policy in a heterogeneous-agent open economy facing import price spikes. Below are my job market paper, CV, and references.',
     // institution may be a single string or an array of strings (for referees affiliated with multiple institutions).
     references: [

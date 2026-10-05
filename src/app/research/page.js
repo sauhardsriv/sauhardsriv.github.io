@@ -2,7 +2,7 @@ import { Fragment } from 'react'
 import AbstractDetails from '../components/AbstractDetails'
 import FlashLink from '../components/FlashLink'
 import SectionCard from '../components/SectionCard'
-import { pages, papers, profile, site, socialLinks, styles } from '../settings'
+import { jobMarket, pages, papers, profile, site, socialLinks, styles } from '../settings'
 
 const researchKeywords = Array.from(new Set([
   ...pages.research.keywords,
@@ -45,17 +45,17 @@ function paperUrl(paper) {
   return `${site.url}${pages.research.path}#${paper.slug}`
 }
 
-// Link a paper's title points to: a published DOI, else a PDF, else the first extra link.
-function primaryHref(paper) {
-  return paper.doiUrl || paper.pdf || paper.links?.[0]?.href || null
-}
-
-// Supplementary resources shown next to the abstract toggle (PDF preprint, code, etc.).
+// Builds the ordered resource list shown beneath each paper title.
 function paperActions(paper) {
   const actions = []
-  if (paper.pdf && paper.pdf !== primaryHref(paper)) actions.push({ label: 'PDF', href: paper.pdf })
-  if (paper.code) actions.push({ label: 'Code', href: paper.code })
-  if (paper.links) paper.links.forEach((link) => actions.push(link))
+  const addAction = (label, href) => {
+    if (href && !actions.some((action) => action.href === href)) actions.push({ label, href })
+  }
+
+  if (paper.section === 'publications') addAction('Journal', paper.doiUrl)
+  addAction('PDF', paper.pdf)
+  addAction('Code', paper.code)
+  paper.links?.forEach((link) => addAction(link.label, link.href))
   return actions
 }
 
@@ -157,15 +157,16 @@ function Coauthors({ paper }) {
 }
 
 function PaperTitle({ paper }) {
-  const href = primaryHref(paper)
-  if (!href) {
-    return <h3 className={styles.paperTitle}>{paper.title}</h3>
-  }
-  return (
-    <h3 className={styles.paperTitle}>
-      <a href={href} className={styles.link} target="_blank" rel="noopener noreferrer">{paper.title}</a>
-    </h3>
-  )
+  return <h3 className={styles.paperTitle}>{paper.title}</h3>
+}
+
+function PaperTag({ tag }) {
+  if (!tag) return null
+
+  const config = typeof tag === 'string' ? { label: tag } : tag
+  if (!config.label || (config.jobMarketOnly && !jobMarket.active)) return null
+
+  return <span className={styles.paperTag}>{config.label}</span>
 }
 
 function PaperItem({ paper }) {
@@ -173,7 +174,10 @@ function PaperItem({ paper }) {
   return (
     <article id={paper.slug} className={styles.paperItem}>
       <div className={styles.itemStack}>
-        <PaperTitle paper={paper} />
+        <div className={styles.paperHeadingRow}>
+          <PaperTitle paper={paper} />
+          <PaperTag tag={paper.tag} />
+        </div>
         <Coauthors paper={paper} />
         {paper.note && <p className={styles.paperSecondary}><em>{paper.note}</em></p>}
         {paper.venue && (

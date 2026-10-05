@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
-import AbstractDetails from '../components/AbstractDetails'
+import Image from 'next/image'
+import { ImageIcon } from 'lucide-react'
 import SectionCard from '../components/SectionCard'
 import { jobMarket, pages, papers, profile, site, socialLinks, styles } from '../settings'
 
@@ -51,9 +52,31 @@ function buildStructuredData() {
   }
 }
 
+function PaperFeatureMedia({ paper }) {
+  if (paper.featuredImage) {
+    return (
+      <Image
+        src={paper.featuredImage}
+        alt={paper.featuredImageAlt || `Preview for ${paper.title}`}
+        fill
+        sizes="(max-width: 767px) 100vw, 32vw"
+        className={styles.jobMarket.paperImage}
+      />
+    )
+  }
+
+  return (
+    <div className={styles.jobMarket.paperImagePlaceholder} role="img" aria-label="Paper image placeholder">
+      <ImageIcon className={styles.jobMarket.paperImagePlaceholderIcon} aria-hidden="true" />
+      <span className={styles.jobMarket.paperImagePlaceholderLabel}>Paper image</span>
+    </div>
+  )
+}
+
 export default function JobMarket() {
-  if (!jobMarket.active) notFound()
+  if (!jobMarket.active || !jmp) notFound()
   const structuredData = buildStructuredData()
+  const paperPdf = jobMarket.jmpPdf || jmp.pdf
 
   return (
     <article className={styles.page}>
@@ -65,69 +88,87 @@ export default function JobMarket() {
       <h1 className={styles.pageTitle}>Job Market Information</h1>
 
       <div className={styles.sectionStack}>
-        <SectionCard title="Overview">
-          <div className={styles.bodyCopy}>
-            <p>{jobMarket.pitch}</p>
-          </div>
-        </SectionCard>
-
-        <SectionCard title="Job Market Paper" className={`${styles.featuredCard} !mb-0`}>
-          <div className={styles.featuredItem}>
-            <h3 className={styles.jobMarket.paperTitle}>{jmp.title}</h3>
-            <div className={styles.jobMarket.abstractWrap}>
-              <AbstractDetails>
-                <p>{jmp.abstract}</p>
-              </AbstractDetails>
+        {jobMarket.pitch && (
+          <SectionCard title="Overview">
+            <div className={styles.bodyCopy}>
+              <p>{jobMarket.pitch}</p>
             </div>
-            <div className={styles.jobMarket.actions}>
-              <a className={styles.buttons.primary} href={jobMarket.jmpPdf} target="_blank" rel="noopener noreferrer">
-                Download Paper (PDF)
-              </a>
+          </SectionCard>
+        )}
+
+        <SectionCard title="Job Market Paper" className={styles.jobMarket.paperCard}>
+          <div className={styles.jobMarket.paperFeatureGrid}>
+            <div className={styles.jobMarket.paperMedia}>
+              <PaperFeatureMedia paper={jmp} />
             </div>
-          </div>
-          <p className={styles.jobMarket.researchLink}>
-            <a className={styles.link} href={pages.research.path}>See all research →</a>
-          </p>
-        </SectionCard>
 
-        <SectionCard title="Curriculum Vitae">
-          <p className={styles.jobMarket.cvNote}>
-            A PDF of my current job-market curriculum vitae.
-          </p>
-          <div className={styles.jobMarket.actions}>
-            <a className={styles.buttons.primary} href={jobMarket.cvPdf} target="_blank" rel="noopener noreferrer">
-              Download CV (PDF)
-            </a>
-          </div>
-        </SectionCard>
-
-        <SectionCard title="References">
-          <div className={styles.jobMarket.referenceList}>
-            {jobMarket.references.map((reference) => {
-              const institutions = Array.isArray(reference.institution) ? reference.institution : [reference.institution]
-              return (
-                <div key={reference.name} className={styles.jobMarket.referenceItem}>
-                  <span className={styles.jobMarket.referenceName}>{reference.name}</span>
-                  {institutions.map((institution) => (
-                    <span key={institution} className={styles.jobMarket.referenceInstitution}>{institution}</span>
-                  ))}
-                  <a className={styles.jobMarket.referenceLink} href={reference.url} target="_blank" rel="noopener noreferrer">
-                    Website ↗
+            <div className={styles.jobMarket.paperFeatureBody}>
+              <h3 className={styles.jobMarket.paperTitle}>{jmp.title}</h3>
+              <div className={styles.jobMarket.abstractWrap}>
+                <p className={styles.jobMarket.abstractText}>{jmp.abstract}</p>
+              </div>
+              {paperPdf && (
+                <div className={styles.jobMarket.actions}>
+                  <a className={styles.buttons.primary} href={paperPdf} target="_blank" rel="noopener noreferrer">
+                    Download Paper (PDF)
                   </a>
                 </div>
-              )
-            })}
+              )}
+              <p className={styles.jobMarket.researchLink}>
+                <a className={styles.link} href={pages.research.path}>See all research →</a>
+              </p>
+            </div>
           </div>
         </SectionCard>
 
-        <SectionCard title="Placement">
-          <p className={styles.jobMarket.cvNote}>
-            Placement information, including how to contact the placement coordinator and directors.
-          </p>
-          <a className={styles.link} href={jobMarket.placementUrl} target="_blank" rel="noopener noreferrer">
-            umn.edu ↗
-          </a>
-        </SectionCard>
+        {jobMarket.cvPdf && (
+          <SectionCard title="Curriculum Vitae">
+            {jobMarket.cvDescription && (
+              <p className={styles.jobMarket.cvNote}>{jobMarket.cvDescription}</p>
+            )}
+            <div className={styles.jobMarket.actions}>
+              <a className={styles.buttons.primary} href={jobMarket.cvPdf} target="_blank" rel="noopener noreferrer">
+                Download CV (PDF)
+              </a>
+            </div>
+          </SectionCard>
+        )}
+
+        {jobMarket.references?.length > 0 && (
+          <SectionCard title="References">
+            <div className={styles.jobMarket.referenceList}>
+              {jobMarket.references.map((reference) => {
+                const institutions = (Array.isArray(reference.institution)
+                  ? reference.institution
+                  : [reference.institution]).filter(Boolean)
+                return (
+                  <div key={reference.name} className={styles.jobMarket.referenceItem}>
+                    <span className={styles.jobMarket.referenceName}>{reference.name}</span>
+                    {institutions.map((institution) => (
+                      <span key={institution} className={styles.jobMarket.referenceInstitution}>{institution}</span>
+                    ))}
+                    {reference.url && (
+                      <a className={styles.jobMarket.referenceLink} href={reference.url} target="_blank" rel="noopener noreferrer">
+                        {reference.linkLabel || 'Website ↗'}
+                      </a>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </SectionCard>
+        )}
+
+        {jobMarket.placementUrl && (
+          <SectionCard title="Placement">
+            {jobMarket.placementDescription && (
+              <p className={styles.jobMarket.cvNote}>{jobMarket.placementDescription}</p>
+            )}
+            <a className={styles.link} href={jobMarket.placementUrl} target="_blank" rel="noopener noreferrer">
+              {jobMarket.placementLabel || 'Placement information ↗'}
+            </a>
+          </SectionCard>
+        )}
       </div>
     </article>
   )

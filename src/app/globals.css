@@ -3,26 +3,36 @@
 @tailwind utilities;
 
 @layer base {
-  /* Palette custom properties (--primary-*, --dark-*) are injected from site.settings.js
+  /* Material color-role properties are injected from site.settings.js
      via a <style> tag in the root layout, so colors live in one place. */
   body {
-    @apply bg-primary-light text-primary-text;
+    @apply bg-surface text-ink antialiased;
     font-family: var(--font-site), sans-serif;
   }
 
   .dark body {
-    @apply bg-dark-primary text-dark-text;
+    @apply bg-dark-surface text-dark-ink;
+  }
+
+  ::selection {
+    background: rgb(var(--light-primary-container));
+    color: rgb(var(--light-on-primary-container));
+  }
+
+  .dark ::selection {
+    background: rgb(var(--dark-primary-container));
+    color: rgb(var(--dark-on-primary-container));
   }
 
   /* M3 focus indicator: visible only for keyboard navigation, not mouse clicks. */
   :focus-visible {
-    outline: 2px solid rgb(var(--primary-url));
-    outline-offset: 2px;
-    border-radius: 4px;
+    outline: 2px solid rgb(var(--light-primary));
+    outline-offset: 3px;
+    border-radius: 6px;
   }
 
   .dark :focus-visible {
-    outline-color: rgb(var(--dark-url));
+    outline-color: rgb(var(--dark-primary));
   }
 }
 
@@ -44,11 +54,11 @@
 }
 
 .flash-target {
-  --flash-color: var(--primary-url);
+  --flash-color: var(--light-primary);
 }
 
 .dark .flash-target {
-  --flash-color: var(--dark-url);
+  --flash-color: var(--dark-primary);
 }
 
 /* Fires on initial load when arriving via a shared #anchor deep-link. */

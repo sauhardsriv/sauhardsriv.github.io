@@ -1,153 +1,243 @@
 # Academic Website Template
 
-A fast, accessible personal website for researchers, built with Next.js and Tailwind CSS. It ships as a static site (no server needed) and deploys to GitHub Pages.
+A static academic website built with Next.js and Tailwind CSS. The template provides an editorial Material 3 theme, responsive light and dark modes, structured research records, an optional job-market section, and metadata suitable for search engines and social previews.
 
-**Features**
+## Architecture
 
-- One content file (`content.js`) for identity, bio, social links, CV entries, publications, and job market info — the only file you need to edit to make the site your own.
-- A data-driven Research page — add a paper by adding one object; it renders into the right section with title link, co-authors, citation, abstract toggle, and resource links (PDF, Code, …).
-- System-aware light/dark mode, plus swappable color palettes (a Material 3 default and a legacy Material 2 set) defined in one place.
-- SEO-ready: per-page metadata, JSON-LD structured data for papers, sitemap, and `robots.txt`.
-- Optional temporary Job Market page (gated by a single boolean toggle).
-- Static export for free hosting on GitHub Pages.
+Personal information is separated from template implementation:
 
-## Quick start
+- `content.js` contains identity, biography, links, research records, CV entries, asset paths, verification tokens, and job-market content.
+- `site.settings.js` contains reusable navigation, metadata derivation, theme tokens, and shared presentation styles.
+- `src/app/` contains route and component templates. Components consume data exported through `src/app/settings.js`.
+- `public/` contains user-supplied images and documents referenced by `content.js`.
+
+Normal personalization requires changes only to `content.js` and files under `public/`. Theme or layout changes belong in `site.settings.js` and `src/app/font.js`.
+
+## Requirements
+
+- Node.js 20.9 or newer
+- npm
+
+## Local development
 
 ```bash
 npm install
-npm run dev          # http://localhost:3000
+npm run dev
 ```
 
-Fork the repo, then edit `content.js` with your own content and rebuild.
+The development site is available at `http://localhost:3000`.
 
-## What to edit
+## Content configuration
 
-**All personal content lives in `content.js`.** Fork it, replace the values, and rebuild — no other file needs to be touched for normal use.
+### Site identity
 
-| Section | What it controls |
-| --- | --- |
-| `site` | Name, URL, author, locale, description, keywords, license. |
-| `profile` | Role, affiliation, employer, research fields, and the About Me bio. |
-| `socialLinks` | Email and social profiles in the sidebar/footer. |
-| `papers` | Publications and working papers (see below). |
-| `cv` | Education and experience entries rendered on the CV page. |
-| `assets` | Profile image and CV file paths (files live in `public/`). |
-| `jobMarket` | Job Market page content and toggle (see below). |
-
-`site.settings.js` holds template-level configuration (navigation, page metadata, color palettes, shared Tailwind class strings) that applies to any user of the template. It imports `content.js` and shouldn't normally need editing — colors and layout changes go there, content changes go in `content.js`.
-
-The site font is set in `src/app/font.js` (Next.js requires `next/font` options to be literal values, so it cannot be moved to config).
-
-### About Me bio
-
-`profile.bio` is an array of paragraphs. Each paragraph is either a plain string or an array of segments:
+The `site` object defines the canonical URL and global metadata:
 
 ```js
-bio: [
-  // Plain string paragraph:
-  'First paragraph text.',
-
-  // Paragraph with inline links and bold:
-  [
-    'Some text with a ',
-    { text: 'link', href: 'https://example.com' },
-    ' and ',
-    { text: 'bold text', bold: true },
-    '.',
-  ],
-],
-```
-
-### CV entries
-
-`cv.education` and `cv.experience` are arrays of entries. Required fields: `date`, `title`, `institution`. Optional: `dateNote` (rendered below the date, e.g. `'(expected)'`), `note` (a secondary line).
-
-```js
-{ date: '2027', dateNote: '(expected)', title: 'PhD in Economics', institution: 'University of Minnesota' },
-```
-
-### Adding a paper
-
-Add an object to the `papers` array. Only `slug`, `section`, `title`, `authors`, and `abstract` are required:
-
-```js
-{
-  slug: 'my-paper-slug',          // unique; used as the anchor id on the Research page
-  section: 'workingPapers',       // must match a key in pages.research.sections (site.settings.js)
-  title: 'My Paper Title',
-  authors: ['Your Name', 'Co Author'],
-  coauthorLinks: { 'Co Author': 'https://coauthor.example' },
-  abstract: 'Full abstract text…',
-
-  // Optional:
-  doiUrl: 'https://doi.org/…',    // published link (title links here first)
-  pdf: '/papers/my-paper.pdf',    // title links here if no doiUrl; also shown as a resource link
-  code: 'https://doi.org/…',      // adds a "Code" link
-  links: [{ label: 'Slides', href: '…' }],
-  venue: 'Journal Name',
-  citation: 'Vol. 1, 2026.',
-  note: 'Draft available soon',   // small status line
-  keywords: ['topic', 'topic'],
-
-  // To surface it in the Featured panel on the Research page:
-  featured: true,
-  highlightLabel: 'Job market paper',
-  summary: 'One-line summary for the featured card.',
-  featuredNote: '2026',           // optional date/note beside the venue
+site: {
+  name: 'Researcher Name',
+  url: 'https://username.github.io',
+  author: 'Researcher Name',
+  language: 'en',
+  locale: 'en_US',
+  description: 'Academic profile and research description.',
+  keywords: ['research field', 'research topic'],
+  license: {
+    label: 'CC BY-NC 4.0',
+    url: 'https://creativecommons.org/licenses/by-nc/4.0/',
+  },
+  verification: {
+    google: 'verification-token',
+  },
 }
 ```
 
-Sections and their order come from `pages.research.sections` in `site.settings.js`. The title links to the DOI, else the PDF, else the first entry in `links`; plain text if none are present.
+The `verification` object is optional. Next.js renders supported verification values as metadata, so provider-specific HTML files are not required.
 
-### Job Market page
+### Profile and biography
 
-The Job Market page is a temporary hub for the hiring season. It is gated by a single boolean at the top of `content.js`:
+The `profile` object defines the academic role, affiliations, research fields, and home-page biography. Each `bio` entry is either a string or an array of text segments:
 
 ```js
-const jobMarketActive = true   // set to false to hide the page and its navbar link
+bio: [
+  'A paragraph containing plain text.',
+  [
+    'A paragraph with an ',
+    { text: 'external link', href: 'https://example.edu' },
+    ' and ',
+    { text: 'bold statement', bold: true },
+    '.',
+  ],
+]
 ```
 
-Setting it to `false` returns a 404 for the route and removes the navbar link — no other changes needed. Content (pitch, JMP slug, PDF paths, references, placement URL) lives in the `jobMarket` block, with `institution` on each reference accepting a string or an array of strings.
+### Social links
 
-### Colors and palettes
+Supported social-link types are `email`, `linkedin`, `github`, and `x`. Email addresses may be split into `emailUser` and `emailDomain` fields.
 
-Each palette in `theme.palettes` (`site.settings.js`) defines the same set of tokens (`primary-*` for light mode, `dark-*` for dark mode). These become CSS custom properties consumed by Tailwind, so changing a color is a one-line edit in one file.
+```js
+socialLinks: [
+  { type: 'email', label: 'Email', emailUser: 'name', emailDomain: 'example.edu' },
+  { type: 'github', label: 'GitHub', href: 'https://github.com/username' },
+]
+```
 
-- **Light/dark mode** follows the OS by default and can be toggled in the navbar.
-- **Palette** is chosen with `theme.palette` (e.g. `'m3'` or `'m2'`). To add your own, add a palette object with the same tokens and point `theme.palette` at it. Individual browsers can override it at runtime via `localStorage.setItem('palette', 'm2')`.
+### Research papers
+
+A paper requires `slug`, `section`, `title`, `authors`, and `abstract`:
+
+```js
+{
+  slug: 'paper-slug',
+  section: 'workingPapers',
+  title: 'Paper Title',
+  authors: ['Researcher Name', 'Coauthor Name'],
+  abstract: 'Abstract text.',
+
+  // Optional publication and resource data
+  coauthorLinks: { 'Coauthor Name': 'https://example.edu/coauthor' },
+  doi: '10.0000/example',
+  doiUrl: 'https://doi.org/10.0000/example',
+  pdf: '/papers/paper.pdf',
+  code: 'https://github.com/username/project',
+  links: [{ label: 'Slides', href: '/papers/slides.pdf' }],
+  venue: 'Journal Name',
+  citation: 'Vol. 1, No. 1, 2026.',
+  note: 'Status note',
+  keywords: ['topic', 'method'],
+
+  // Optional Research-page tag
+  tag: 'New',
+  // tag: { label: 'Job Market Paper', jobMarketOnly: true },
+
+  // Optional Featured panel content
+  featured: true,
+  highlightLabel: 'Featured paper',
+  summary: 'Short summary for the Featured panel.',
+  featuredNote: '2026',
+
+  // Optional media used by paper-feature layouts
+  featuredImage: '/papers/paper-preview.png',
+  featuredImageAlt: 'Description of the paper preview',
+}
+```
+
+Paper titles in the Publications and Working Papers sections are plain text. Available actions render in this order: `Journal`, `PDF`, `Code`, custom links, and `Abstract`. The `Journal` action uses `doiUrl` for publications. Missing resources are omitted.
+
+A string-valued `tag` is always visible. An object with `jobMarketOnly: true` is visible only while the Job Market page is active.
+
+### Curriculum vitae
+
+The `cv.education` and `cv.experience` arrays use the same entry structure:
+
+```js
+{
+  date: '2027',
+  dateNote: '(expected)',
+  title: 'Degree or position',
+  institution: 'Institution Name',
+  note: 'Optional secondary line',
+}
+```
+
+`date`, `title`, and `institution` are required. `dateNote` and `note` are optional.
 
 ### Assets
 
-Put your profile photo and PDFs in `public/` and reference them in `assets` (for the profile image and CV PDF) and in each paper's `pdf` field.
+Store profile images and documents under `public/`, then reference them with root-relative paths:
 
-## Build and deploy
-
-```bash
-npm run build        # production build + static export to out/ + sitemap
-npm run deploy       # publishes out/ to GitHub Pages via gh-pages
+```js
+assets: {
+  profileImage: '/profile.png',
+  profileImageDark: '/profile-dark.png',
+  profileImageAlt: 'Researcher profile photograph',
+  profileImageSizes: '(max-width: 768px) 144px, 192px',
+  cvPdf: '/resume/cv.pdf',
+}
 ```
 
-`output: 'export'` in `next.config.*` produces a fully static site. For a user/organization GitHub Pages site (`username.github.io`), no base-path config is needed. For a project page served from a subpath, set `basePath` in `next.config.*` accordingly.
+Spaces in public URLs should be percent-encoded as `%20`.
+
+### Job Market page
+
+The Job Market page and all associated UI are controlled by one boolean:
+
+```js
+const jobMarketActive = true
+```
+
+Setting the value to `false` removes the navigation item, renders a `noindex` not-found response, omits the route from the sitemap, hides the home-page notice, and suppresses paper tags marked `jobMarketOnly`.
+
+The `jobMarket` object supports the following fields:
+
+| Field | Purpose |
+| --- | --- |
+| `active` | Enables the Job Market feature. |
+| `homeStatus` | Bold status sentence shown after the home-page biography. |
+| `homeLink.text` and `homeLink.label` | Text and linked label for the home-page notice. |
+| `jmpSlug` | Slug of the paper displayed as the Job Market Paper. |
+| `jmpPdf` | Optional PDF override; the selected paper's `pdf` is used when omitted. |
+| `cvPdf` and `cvDescription` | Job-market CV file and accompanying text. |
+| `pitch` | Overview text. |
+| `references` | Reference records with `name`, `institution`, and optional `url` or `linkLabel`. |
+| `placementUrl`, `placementLabel`, `placementDescription` | Placement section content. |
+
+The overview, CV, references, and placement sections are omitted when their required content is absent. A reference institution may be a string or an array of strings.
+
+## Theme configuration
+
+`site.settings.js` defines Material 3 semantic color roles for light and dark modes. Components use role names rather than direct color values, allowing a palette to be replaced without editing individual pages.
+
+The active palette is selected by `theme.palette`. Additional palettes must provide the same semantic tokens as the existing palette.
+
+Typography is configured in `src/app/font.js`:
+
+- Newsreader for display and heading roles
+- IBM Plex Sans for body text, metadata, and controls
+
+Next.js requires font configuration values to remain statically analyzable, so font definitions are maintained separately from `content.js`.
+
+## Search metadata
+
+Page metadata and JSON-LD records are derived from `content.js`. The post-build process generates `sitemap.xml` and `robots.txt` from `site.url`; these files should not be edited manually. PDF files under `public/` are added to the sitemap automatically.
+
+## Production build
+
+```bash
+npm run build
+```
+
+The command creates the static export in `out/` and updates the generated search-engine files. The deployment command adds `out/.nojekyll` and copies the generated SEO files into the export before publishing.
+
+To publish through the configured `gh-pages` workflow:
+
+```bash
+npm run deploy
+```
+
+For a user or organization GitHub Pages repository (`username.github.io`), the default empty `basePath` is appropriate. A project site hosted below a path requires corresponding `basePath` and `assetPrefix` values in `next.config.js`.
 
 ## Project structure
 
-```
-content.js                 # all user-specific content — edit this to personalize the site
-site.settings.js           # template config (theme, navigation, page metadata, styles)
-next-sitemap.config.js     # sitemap + robots generation
+```text
+content.js                    Personal content and asset references
+site.settings.js              Template settings, metadata derivation, and styles
+next.config.js                Static-export configuration
+next-sitemap.config.js        Sitemap and robots generation
 src/app/
-  layout.js                 # HTML shell, metadata, palette CSS injection
-  page.js                    # homepage (renders from profile.bio)
-  research/page.js           # Research page (renders from papers)
-  cv/page.js                 # CV page (renders from cv.education / cv.experience)
-  job-market/page.js         # Job Market page (gated by jobMarketActive)
-  globals.css                # base styles, focus ring, anchor-flash animation
-  font.js                    # site font (edit here to change typeface)
-  settings.js                # re-exports settings + builds palette CSS variables
-  components/                # navbar, footer, theme toggle, paper helpers, …
-public/                     # profile image, PDFs, robots.txt, sitemap
+  layout.js                   Document shell and global metadata
+  page.js                     Home page
+  research/page.js            Research page
+  cv/page.js                  Curriculum vitae page
+  job-market/page.js          Optional Job Market page
+  settings.js                 Settings exports and palette variables
+  font.js                     Font configuration
+  globals.css                 Global styles and interaction states
+  components/                 Shared interface components
+public/                       User-supplied images and documents
+out/                          Generated static export
 ```
 
 ## License
 
-Code is provided as a template you can adapt. Replace the content, profile image, and license to suit your own site.
+The template may be adapted for an individual academic website. Site content, documents, images, and the displayed content license remain the responsibility of the site owner.
