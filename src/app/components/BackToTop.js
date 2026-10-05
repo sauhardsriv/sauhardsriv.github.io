@@ -1,44 +1,35 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ArrowUp } from 'lucide-react'
-import { styles } from '../settings'
+import MaterialSymbol from './MaterialSymbol'
+import { labels, styles } from '../settings'
 
 export default function BackToTop() {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    const toggleVisibility = () => {
-      if (window.pageYOffset > 300) {
-        setIsVisible(true)
-      } else {
-        setIsVisible(false)
-      }
-    }
+    const toggleVisibility = () => setIsVisible(window.scrollY > 300)
 
-    window.addEventListener('scroll', toggleVisibility)
+    toggleVisibility()
+    window.addEventListener('scroll', toggleVisibility, { passive: true })
     return () => window.removeEventListener('scroll', toggleVisibility)
   }, [])
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    })
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' })
   }
 
   return (
-    <>
-      {isVisible && (
-        <button
-          onClick={scrollToTop}
-          className={styles.buttons.backToTop}
-          type="button"
-          aria-label="Back to top"
-        >
-          <ArrowUp className={styles.buttons.backToTopIcon} />
-        </button>
-      )}
-    </>
+    <button
+      onClick={scrollToTop}
+      className={`${styles.buttons.backToTop} ${isVisible ? styles.buttons.backToTopVisible : styles.buttons.backToTopHidden}`}
+      type="button"
+      aria-label={labels.backToTop}
+      aria-hidden={!isVisible}
+      tabIndex={isVisible ? 0 : -1}
+    >
+      <MaterialSymbol name="vertical_align_top" className={styles.buttons.backToTopIcon} />
+    </button>
   )
 }

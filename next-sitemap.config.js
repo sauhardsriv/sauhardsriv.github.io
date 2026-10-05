@@ -3,21 +3,38 @@ const fs = require('fs');
 const path = require('path');
 const { jobMarket, site } = require('./site.settings');
 
-// Returns every PDF path under public/ for inclusion in the sitemap.
+// User agents that collect content for AI model training. Search engines and the
+// retrieval agents that AI assistants use to read and cite pages (OAI-SearchBot,
+// ChatGPT-User, Claude-SearchBot, Claude-User, PerplexityBot) are not listed.
+const aiTrainingCrawlers = [
+  'GPTBot',
+  'ClaudeBot',
+  'anthropic-ai',
+  'Google-Extended',
+  'Applebot-Extended',
+  'meta-externalagent',
+  'CCBot',
+  'Bytespider',
+  'cohere-training-data-crawler',
+];
+const allowAiTraining = site.crawlers?.aiTraining !== false;
+
+// Returns every PDF under public/ with its last-modified time, for inclusion in the sitemap.
 function getAllPDFs(dirPath = 'public', arrayOfFiles = []) {
   const files = fs.readdirSync(dirPath);
 
   files.forEach(file => {
     const filePath = path.join(dirPath, file);
-    
-    if (fs.statSync(filePath).isDirectory()) {
+    const stats = fs.statSync(filePath);
+
+    if (stats.isDirectory()) {
       getAllPDFs(filePath, arrayOfFiles);
     } else if (path.extname(file).toLowerCase() === '.pdf') {
       const urlPath = encodeURI(filePath
         .replace('public', '')
         .split(path.sep)
         .join('/'));
-      arrayOfFiles.push(urlPath);
+      arrayOfFiles.push({ urlPath, lastmod: stats.mtime.toISOString() });
     }
   });
 
@@ -28,57 +45,25 @@ module.exports = {
   siteUrl: process.env.SITE_URL || site.url,
   generateRobotsTxt: true,
   generateIndexSitemap: false,
-  exclude: ['/404', ...(jobMarket.active ? [] : ['/job-market'])],
+  exclude: ['/404', '/_not-found', '/llms.txt', ...(jobMarket?.active ? [] : ['/job-market'])],
   additionalPaths: async (config) => {
-    const result = [];
-    
-    const pdfPaths = getAllPDFs();
-    
-    for (const pdf of pdfPaths) {
-      result.push({
-        loc: `${config.siteUrl}${pdf}`,
-        lastmod: new Date().toISOString(),
-        changefreq: 'monthly',
-        priority: 0.7
-      });
-    }
-
-    return result;
+    return getAllPDFs().map(pdf => ({
+      loc: `${config.siteUrl}${pdf.urlPath}`,
+      lastmod: pdf.lastmod,
+      changefreq: 'monthly',
+      priority: 0.7,
+    }));
   },
   robotsTxtOptions: {
     policies: [
-      {
-        userAgent: 'Googlebot',
-        allow: '/',
-      },
-      {
-        userAgent: 'Bingbot',
-        allow: '/',
-      },
-      {
-        userAgent: 'OAI-SearchBot',
-        allow: '/',
-      },
-      {
-        userAgent: 'ChatGPT-User',
-        allow: '/',
-      },
-      {
-        userAgent: 'GPTBot',
-        disallow: '/',
-      },
-      {
-        userAgent: 'Google-Extended',
-        disallow: '/',
-      },
-      {
-        userAgent: 'CCBot',
-        disallow: '/',
-      },
+      ...(allowAiTraining ? [] : aiTrainingCrawlers.map(userAgent => ({ userAgent, disallow: '/' }))),
       {
         userAgent: '*',
         allow: '/',
       }
     ],
+    transformRobotsTxt: async (config, robotsTxt) => allowAiTraining
+      ? robotsTxt
+      : robotsTxt.replace(/^User-agent: \*$/m, '$&\nContent-Signal: search=yes, ai-input=yes, ai-train=no'),
   },
 }

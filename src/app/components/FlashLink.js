@@ -11,7 +11,8 @@ export default function FlashLink({ targetId, className, children }) {
     const abstract = el.querySelector('details')
     if (abstract) abstract.open = true
 
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' })
 
     // Remove, force a reflow, then re-add so the animation replays on every click.
     el.classList.remove('flash-now')

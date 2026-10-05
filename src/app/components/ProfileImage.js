@@ -19,15 +19,19 @@ export default function ProfileImage() {
       <Image
         src={assets.profileImage}
         priority
-        className={`${styles.profileImage} transition-opacity duration-300 dark:opacity-0`}
+        className={assets.profileImageDark
+          ? `${styles.profileImage} transition-opacity duration-300 dark:opacity-0`
+          : styles.profileImage}
         {...imageProps}
       />
-      <Image
-        src={assets.profileImageDark}
-        priority
-        className={`${styles.profileImage} transition-opacity duration-300 opacity-0 dark:opacity-100`}
-        {...imageProps}
-      />
+      {assets.profileImageDark && (
+        <Image
+          src={assets.profileImageDark}
+          priority
+          className={`${styles.profileImage} transition-opacity duration-300 opacity-0 dark:opacity-100`}
+          {...imageProps}
+        />
+      )}
       {/* Prevent direct pointer interaction with the rendered images. */}
       <div
         className={styles.profileImageGuard}

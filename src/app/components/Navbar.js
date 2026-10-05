@@ -9,7 +9,7 @@ export default function Navbar() {
   const pathname = usePathname()
 
   const NavLink = ({ href, children }) => {
-    const isActive = pathname === href
+    const isActive = pathname === href || (href !== '/' && pathname.startsWith(`${href}/`))
     return (
       <Link
         href={href}

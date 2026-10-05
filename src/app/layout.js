@@ -2,8 +2,10 @@ import './globals.css'
 import Providers from './providers'
 import ClientWrapper from './components/ClientWrapper'
 import { displayFont, siteFont } from './font'
-import { assets, paletteVariablesCss, site, theme } from './settings'
+import { assets, openGraphBase, paletteVariablesCss, site, socialImage, theme } from './settings'
 
+// Canonical and Open Graph URLs are set per page, so pages without their own
+// (such as the not-found page) never inherit another page's URL.
 export const metadata = {
   metadataBase: new URL(site.url),
   title: {
@@ -12,37 +14,28 @@ export const metadata = {
   },
   description: site.description,
   keywords: site.keywords,
-  authors: [{ name: site.author }],
+  authors: [{ name: site.author, url: site.url }],
   creator: site.author,
-  alternates: {
-    canonical: '/',
-  },
+  ...(assets.icon && {
+    icons: {
+      icon: assets.icon,
+      apple: assets.appleIcon || assets.icon,
+    },
+  }),
   openGraph: {
-    type: 'website',
-    locale: site.locale,
-    url: '/',
-    siteName: site.name,
+    ...openGraphBase,
     title: site.name,
     description: site.description,
-    images: [
-      {
-        url: assets.profileImage,
-        alt: assets.profileImageAlt,
-      },
-    ],
   },
+  // X reads each page's Open Graph title and description when these are omitted.
   twitter: {
     card: 'summary',
-    title: site.name,
-    description: site.description,
-    images: [assets.profileImage],
+    images: [socialImage],
   },
+  // Pages are indexable by default; only preview limits are set here, so a
+  // page's noindex (for example, the not-found page) is never contradicted.
   robots: {
-    index: true,
-    follow: true,
     googleBot: {
-      index: true,
-      follow: true,
       'max-image-preview': 'large',
       'max-snippet': -1,
       'max-video-preview': -1,
@@ -66,7 +59,7 @@ const paletteInitScript = `(function(){try{var p=localStorage.getItem('palette')
 
 export default function RootLayout({ children }) {
   return (
-    <html lang={site.language || 'en'} data-palette={theme.palette} suppressHydrationWarning>
+    <html lang={site.language || 'en'} data-palette={theme.palette} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <style dangerouslySetInnerHTML={{ __html: paletteVariablesCss() }} />
       </head>

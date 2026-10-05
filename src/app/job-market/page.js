@@ -1,8 +1,11 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
-import { ImageIcon } from 'lucide-react'
+import MaterialSymbol from '../components/MaterialSymbol'
+import ContactLinks from '../components/ContactLinks'
 import SectionCard from '../components/SectionCard'
-import { jobMarket, pages, papers, profile, site, socialLinks, styles } from '../settings'
+import { formatPaperDate } from '../papers'
+import { JsonLd, personNode, profilePageNode, scholarlyArticleNode } from '../structuredData'
+import { jobMarket, labels, openGraphBase, pages, papers, styles } from '../settings'
 
 const jmp = papers.find((paper) => paper.slug === jobMarket.jmpSlug)
 
@@ -14,42 +17,12 @@ export const metadata = {
     canonical: pages.jobMarket.path,
   },
   openGraph: {
+    ...openGraphBase,
     url: pages.jobMarket.path,
     title: pages.jobMarket.title,
     description: pages.jobMarket.description,
   },
-}
-
-function buildStructuredData() {
-  const sameAs = socialLinks
-    .filter((link) => link.type !== 'email' && link.href)
-    .map((link) => link.href)
-
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'ProfilePage',
-    '@id': `${site.url}${pages.jobMarket.path}#webpage`,
-    name: `${site.author} — Job Market`,
-    url: `${site.url}${pages.jobMarket.path}`,
-    description: pages.jobMarket.description,
-    mainEntity: {
-      '@type': 'Person',
-      '@id': `${site.url}/#person`,
-      name: site.author,
-      url: site.url,
-      jobTitle: profile.title,
-      description: `${profile.title}; ${profile.jobMarket}`,
-      affiliation: {
-        '@type': 'CollegeOrUniversity',
-        name: profile.affiliation,
-      },
-      worksFor: {
-        '@type': 'Organization',
-        name: profile.employer,
-      },
-      sameAs,
-    },
-  }
+  ...(!jobMarket.active && { robots: { index: false, follow: true } }),
 }
 
 function PaperFeatureMedia({ paper }) {
@@ -57,7 +30,7 @@ function PaperFeatureMedia({ paper }) {
     return (
       <Image
         src={paper.featuredImage}
-        alt={paper.featuredImageAlt || `Preview for ${paper.title}`}
+        alt={paper.featuredImageAlt || `${labels.imagePreviewPrefix} ${paper.title}`}
         fill
         sizes="(max-width: 767px) 100vw, 32vw"
         className={styles.jobMarket.paperImage}
@@ -66,37 +39,49 @@ function PaperFeatureMedia({ paper }) {
   }
 
   return (
-    <div className={styles.jobMarket.paperImagePlaceholder} role="img" aria-label="Paper image placeholder">
-      <ImageIcon className={styles.jobMarket.paperImagePlaceholderIcon} aria-hidden="true" />
-      <span className={styles.jobMarket.paperImagePlaceholderLabel}>Paper image</span>
+    <div className={styles.jobMarket.paperImagePlaceholder} role="img" aria-label={pages.jobMarket.imagePlaceholderLabel}>
+      <MaterialSymbol name="image" className={styles.jobMarket.paperImagePlaceholderIcon} />
+      <span className={styles.jobMarket.paperImagePlaceholderLabel}>{pages.jobMarket.imagePlaceholderLabel}</span>
     </div>
   )
 }
 
 export default function JobMarket() {
   if (!jobMarket.active || !jmp) notFound()
-  const structuredData = buildStructuredData()
   const paperPdf = jobMarket.jmpPdf || jmp.pdf
+  const paperVersion = formatPaperDate(jmp)
+  const fields = jobMarket.fields || []
 
   return (
     <article className={styles.page}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
+      <JsonLd graph={[personNode(), profilePageNode(pages.jobMarket), scholarlyArticleNode(jmp)]} />
 
-      <h1 className={styles.pageTitle}>Job Market Information</h1>
+      <h1 className={styles.pageTitle}>{pages.jobMarket.heading}</h1>
 
       <div className={styles.sectionStack}>
-        {jobMarket.pitch && (
-          <SectionCard title="Overview">
-            <div className={styles.bodyCopy}>
-              <p>{jobMarket.pitch}</p>
-            </div>
+        {(jobMarket.pitch || fields.length > 0) && (
+          <SectionCard title={pages.jobMarket.overviewTitle}>
+            {jobMarket.pitch && (
+              <div className={styles.bodyCopy}>
+                <p>{jobMarket.pitch}</p>
+              </div>
+            )}
+            {fields.length > 0 && (
+              <p className={styles.jobMarket.fieldsLine}>
+                <span className={styles.jobMarket.fieldsLabel}>{pages.jobMarket.fieldsLabel}:</span>{' '}
+                {fields.join(', ')}
+              </p>
+            )}
           </SectionCard>
         )}
 
-        <SectionCard title="Job Market Paper" className={styles.jobMarket.paperCard}>
+        <SectionCard
+          title={pages.jobMarket.paperTitle}
+          className={styles.jobMarket.paperCard}
+          titleAside={paperVersion && (
+            <p className={styles.jobMarket.version}>{pages.jobMarket.versionLabel}: {paperVersion}</p>
+          )}
+        >
           <div className={styles.jobMarket.paperFeatureGrid}>
             <div className={styles.jobMarket.paperMedia}>
               <PaperFeatureMedia paper={jmp} />
@@ -107,35 +92,43 @@ export default function JobMarket() {
               <div className={styles.jobMarket.abstractWrap}>
                 <p className={styles.jobMarket.abstractText}>{jmp.abstract}</p>
               </div>
-              {paperPdf && (
-                <div className={styles.jobMarket.actions}>
-                  <a className={styles.buttons.primary} href={paperPdf} target="_blank" rel="noopener noreferrer">
-                    Download Paper (PDF)
-                  </a>
-                </div>
-              )}
-              <p className={styles.jobMarket.researchLink}>
-                <a className={styles.link} href={pages.research.path}>See all research →</a>
-              </p>
             </div>
+          </div>
+
+          <div className={styles.jobMarket.paperFooter}>
+            {(paperPdf || jmp.slides) && (
+              <div className={styles.jobMarket.paperActions}>
+                {paperPdf && (
+                  <a className={styles.buttons.filled} href={paperPdf} target="_blank" rel="noopener noreferrer">
+                    {pages.jobMarket.paperDownloadLabel}
+                  </a>
+                )}
+                {jmp.slides && (
+                  <a className={styles.buttons.outlined} href={jmp.slides} target="_blank" rel="noopener noreferrer">
+                    {pages.jobMarket.slidesLabel}
+                  </a>
+                )}
+              </div>
+            )}
+            <a className={`${styles.link} ${styles.jobMarket.researchLink}`} href={pages.research.path}>{pages.jobMarket.researchLinkLabel}</a>
           </div>
         </SectionCard>
 
         {jobMarket.cvPdf && (
-          <SectionCard title="Curriculum Vitae">
+          <SectionCard title={pages.jobMarket.cvTitle}>
             {jobMarket.cvDescription && (
               <p className={styles.jobMarket.cvNote}>{jobMarket.cvDescription}</p>
             )}
             <div className={styles.jobMarket.actions}>
-              <a className={styles.buttons.primary} href={jobMarket.cvPdf} target="_blank" rel="noopener noreferrer">
-                Download CV (PDF)
+              <a className={styles.buttons.filled} href={jobMarket.cvPdf} target="_blank" rel="noopener noreferrer">
+                {pages.jobMarket.cvDownloadLabel}
               </a>
             </div>
           </SectionCard>
         )}
 
         {jobMarket.references?.length > 0 && (
-          <SectionCard title="References">
+          <SectionCard title={pages.jobMarket.referencesTitle}>
             <div className={styles.jobMarket.referenceList}>
               {jobMarket.references.map((reference) => {
                 const institutions = (Array.isArray(reference.institution)
@@ -149,7 +142,7 @@ export default function JobMarket() {
                     ))}
                     {reference.url && (
                       <a className={styles.jobMarket.referenceLink} href={reference.url} target="_blank" rel="noopener noreferrer">
-                        {reference.linkLabel || 'Website ↗'}
+                        {reference.linkLabel || labels.referenceLink}
                       </a>
                     )}
                   </div>
@@ -160,13 +153,19 @@ export default function JobMarket() {
         )}
 
         {jobMarket.placementUrl && (
-          <SectionCard title="Placement">
+          <SectionCard title={pages.jobMarket.placementTitle}>
             {jobMarket.placementDescription && (
               <p className={styles.jobMarket.cvNote}>{jobMarket.placementDescription}</p>
             )}
             <a className={styles.link} href={jobMarket.placementUrl} target="_blank" rel="noopener noreferrer">
-              {jobMarket.placementLabel || 'Placement information ↗'}
+              {jobMarket.placementLabel || labels.placementLink}
             </a>
+          </SectionCard>
+        )}
+
+        {jobMarket.contact && (
+          <SectionCard title={pages.jobMarket.contactTitle}>
+            <ContactLinks email={jobMarket.contact} />
           </SectionCard>
         )}
       </div>

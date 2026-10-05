@@ -1,24 +1,24 @@
 'use client'
 
 import Link from 'next/link'
-import { FaExclamationTriangle, FaArrowLeft } from 'react-icons/fa'
-import { styles } from './settings'
+import MaterialSymbol from './components/MaterialSymbol'
+import { pages, styles } from './settings'
 
 export default function NotFound() {
   return (
     <div className={styles.notFound.root}>
-      <FaExclamationTriangle className={styles.notFound.icon} />
+      <MaterialSymbol name="error" className={styles.notFound.icon} />
 
       <h1 className={styles.notFound.title}>
-        404 - Page Not Found
+        {pages.notFound.heading}
       </h1>
       <p className={styles.notFound.message}>
-        The page you're looking for doesn't exist.
+        {pages.notFound.message}
       </p>
 
-      <Link href="/" className={styles.notFound.button}>
-        <FaArrowLeft className={styles.notFound.buttonIcon} />
-        Go to Homepage
+      <Link href={pages.home.path} className={styles.notFound.button}>
+        <MaterialSymbol name="arrow_back" className={styles.notFound.buttonIcon} />
+        {pages.notFound.buttonLabel}
       </Link>
     </div>
   )

@@ -1,11 +1,13 @@
 // ─────────────────────────────────────────────────────────────────────────────
 //  SITE CONTENT
 //  Identity, copy, links, documents, and records rendered by the template.
-//  Field definitions and examples are documented in README.md.
+//  Field definitions, examples, and every optional switch are documented in README.md
+//  (see "Options at a glance").
+//  This content is not covered by the template's MIT License.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Set to false after the job market cycle ends to disable job-market-specific UI.
-const jobMarketActive = false
+const jobMarketActive = true
 
 const content = {
 
@@ -24,6 +26,10 @@ const content = {
     },
     verification: {
       google: 'google1c699124076149cf',
+    },
+    // Search engines and AI assistants may read the site; aiTraining: false asks AI crawlers not to train on it.
+    crawlers: {
+      aiTraining: false,
     },
   },
 
@@ -61,17 +67,28 @@ const content = {
   // Supported types: email, linkedin, github, x. Add or remove entries as needed.
   // For email, provide emailUser and emailDomain separately (avoids scraping).
   socialLinks: [
-    { type: 'email', label: 'Email', emailUser: 'sauhardsrivastava', emailDomain: 'gmail.com' },
+    { type: 'email', label: 'Email', emailUser: 'sriva238', emailDomain: 'umn.edu' },
     { type: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/sauhard-srivastava/' },
     { type: 'github', label: 'GitHub', href: 'https://github.com/sauhardsriv' },
     { type: 'x', label: 'X', href: 'https://x.com/sauhardsriv' },
   ],
 
+  // ── Optional features ────────────────────────────────────────────────────
+  // paperPages: a page per paper (/research/<slug>) with Google Scholar metadata; when false,
+  //   papers are referenced by their anchors on the Research page.
+  // citations: a Cite action on each paper that copies a BibTeX entry.
+  features: {
+    paperPages: false,
+    citations: false,
+  },
+
   // ── Research papers ───────────────────────────────────────────────────────
   // Required per entry: slug, section, title, authors, abstract.
-  // Optional: doiUrl, pdf, code, links[], venue, citation, doi, note, tag, coauthorLinks, keywords,
+  // Optional: date (YYYY, YYYY-MM, or YYYY-MM-DD), doiUrl, pdf, slides, code, links[], venue, citation, doi,
+  //           note, tag, coauthorLinks, keywords, bibtex (overrides the generated Cite entry),
   //           featured, highlightLabel, summary, featuredNote.
-  // Titles remain plain text. Available resources render as Journal | PDF | Code | Abstract;
+  // List authors in published order; it is used for citations. Resources render as Journal | PDF | Slides |
+  // Code | Cite | Abstract;
   // Journal uses doiUrl for publications, while custom links retain their supplied labels.
   // Set featured:true to surface the paper in the Featured panel on the Research page.
   papers: [
@@ -82,12 +99,14 @@ const content = {
       authors: ['Sauhard Srivastava'],
       tag: { label: 'Job Market Paper', jobMarketOnly: true },
       featured: true,
-      featuredImage: '/papers/hasoe_imports2026.png',
-      featuredImageAlt: 'Preview image for the job market paper',
+      featuredImage: '/papers/hasoe_imports2026.webp',
+      featuredImageAlt: 'Line chart of the domestic energy price, in percent deviation from 2021Q1 to 2024Q4, under optimal FX and monetary policy and under interest parity, alongside the world energy price. The domestic price peaks near 145 percent under optimal policy and near 205 percent under interest parity.',
       pdf: '/papers/hasoe_imports2026.pdf',
+      slides: '/papers/hasoe_imports2026_slides_web.pdf',
+      date: '2026-10-05',
       highlightLabel: 'Featured working paper',
       summary: 'Optimal exchange rate and monetary policies in a heterogeneous-agent small open economy facing essential import price spikes.',
-      abstract: 'We characterize jointly optimal exchange rate and monetary policies under commitment in a heterogeneous-agent, import-dependent small open economy facing essential import price spikes. When some households are borrowing constrained, exchange rate management becomes a tool for real income stabilization through the intertemporal margin, requiring temporary interest parity deviations, while optimal monetary policy targets the labor wedge. In an open economy, these roles are not substitutable. A Ramsey planner internalizes how pecuniary general equilibrium effects from real exchange rate movements redistribute real incomes: facing a spike, the planner leans against the depreciation, cutting exports and shifting resources toward constrained households through higher real wages. Calibrated to Japan`s 2022 energy price path, optimal policy departs from representative-agent prescriptions and uses FX interventions to cut the contemporaneous co-movement of the real exchange rate with world energy prices while accepting costly interest parity deviations. Monetary policy complements FX policy by taking a disinflationary stance.',
+      abstract: 'We characterize optimal exchange rate and monetary policies in a heterogeneous-agent, import-dependent economy facing essential-import price spikes and subject to the Marshall-Lerner condition. With some households borrowing constrained, a laissez-faire exchange rate response is costly: a concurrent depreciation amplifies their current income losses. Optimal policy instead intervenes in FX markets to lean against such depreciations and boost real incomes through indirect income effects. Exchange rate management becomes a real-income stabilization tool, driving interest parity wedges to cut import price co-movement with exchange rates and exports while accepting more volatile capital flows. Monetary policy distorts the labor wedge, complementing FX operations with a tighter-than-conventional stance. Their roles are not substitutable: interest parity limits monetary policy\'s real income protection. In a monetary economy, higher real incomes arrive as lower inflation: exchange rate policy becomes an anti-inflation policy; our quantitative energy shocks model shows it fights imported inflation more effectively than monetary policy.',
       keywords: ['Foreign exchange interventions', 'optimal monetary policy', 'heterogeneous agents', 'import price shocks', 'real income channel', 'energy shocks'],
     },
     {
@@ -101,6 +120,7 @@ const content = {
       featuredNote: 'Aug 2026',
       venue: 'Journal of International Economics',
       citation: 'Vol. 162, Article 104282, August 2026.',
+      date: '2026-08',
       doi: '10.1016/j.jinteco.2026.104282',
       doiUrl: 'https://doi.org/10.1016/j.jinteco.2026.104282',
       pdf: '/papers/reserves2024.pdf',
@@ -112,7 +132,8 @@ const content = {
       slug: 'net-zero-small-open-economy',
       section: 'workingPapers',
       title: 'The Transition to Net Zero in a Small Open Economy',
-      authors: ['Sauhard Srivastava', 'Neil Mehrotra'],
+      authors: ['Neil Mehrotra', 'Sauhard Srivastava'],
+      date: '2025',
       coauthorLinks: {
         'Neil Mehrotra': 'https://sites.google.com/site/neilrmehrotra/',
       },
@@ -125,6 +146,7 @@ const content = {
       section: 'workingPapers',
       title: 'The Price of Quality: Demand-Driven Technology Choice and the Penn Effect',
       authors: ['Sauhard Srivastava'],
+      date: '2025',
       pdf: '/papers/hbs_new2025.pdf',
       abstract: 'This paper proposes a novel, demand-side explanation for the Penn effect: the observation that richer countries systematically exhibit higher price levels. We develop a general equilibrium model where income-dependent preferences lead more productive countries to produce and consume higher-quality, more resource-intensive non-tradeable goods. Our key result is that this endogenous shift toward producing superior goods, which have higher unit factor requirements, outweighs the standard cost-reducing effects of productivity growth, resulting in higher prices. The model shows that quality upgrading emerges as an equilibrium response to rising incomes and leads to higher non-tradeable prices in richer economies even in the absence of Harrod-Balassa-Samuelson (HBS) effects. Using Penn World Table data, the model replicates the empirical Penn effect, explaining about 69 percent of cross-country price variation without relying on HBS effects.',
       keywords: ['Penn effect', 'quality upgrading', 'non-tradeable goods', 'technology choice', 'income-dependent preferences', 'price levels', 'Penn World Table'],
@@ -133,9 +155,10 @@ const content = {
       slug: 'productivity-real-exchange-rates-india-balassa-samuelson',
       section: 'publications',
       title: 'Productivity and real exchange rates for India: does Balassa-Samuelson effect explain?',
-      authors: ['Sauhard Srivastava', 'Saurabh Ghosh', 'Siddhartha Nath'],
+      authors: ['Saurabh Ghosh', 'Siddhartha Nath', 'Sauhard Srivastava'],
       venue: 'Indian Growth and Development Review',
       citation: 'Vol. 16 No. 1, pp. 41-73, March 2023.',
+      date: '2023-03',
       doi: '10.1108/IGDR-11-2022-0130',
       doiUrl: 'https://doi.org/10.1108/IGDR-11-2022-0130',
       abstract: 'This study explores the long-run equilibrium relationship between India\'s real exchange rate and sectoral productivity trends using internationally comparable KLEMS productivity databases for India, China, the euro area, the USA, the UK, and Japan. This study uses pooled mean group estimations for panel data, as suggested by Pesaran et al. (1999). The results support an "extended" Balassa-Samuelson (BS) hypothesis, which allows for labour market frictions that prevent wage equalisation between traded and non-traded sectors within a country. This mechanism continues to find support when we separate out the distribution sector, which comprises wholesale and retail trade in the domestic services sector. The empirical evidence suggests that India\'s real exchange rate is anchored to domestic fundamentals and is closely aligned with its fair value over a medium- to long-term horizon.',
@@ -145,9 +168,10 @@ const content = {
       slug: 'labour-disputes-manufacturing-growth-indian-states',
       section: 'publications',
       title: 'Labour Disputes and the Manufacturing Sector\'s Growth: Recent Evidence from Indian States',
-      authors: ['Sauhard Srivastava', 'Siddhartha Nath'],
+      authors: ['Siddhartha Nath', 'Sauhard Srivastava'],
       venue: 'Theoretical Economics Letters',
       citation: 'Vol. 12 No. 3, pp. 636-663, June 2022.',
+      date: '2022-06',
       doi: '10.4236/tel.2022.123036',
       doiUrl: 'https://doi.org/10.4236/tel.2022.123036',
       abstract: 'The persistent variation among Indian states in per-capita value added from the manufacturing sector raises the question of whether the long-run equilibrium in the manufacturing sector differs across states. In this paper, we provide empirical evidence on whether labour disputes in the form of strikes, lockouts, temporary closures, and related disruptions have caused variation in these equilibria in the recent period. Available data suggest that in 9 out of 16 states in our sample, labour disputes generally declined between 2001 and 2017, while in others, labour disputes were mostly characterised as random shocks with little predictability. Our two-stage least squares estimates, using states\' election cycles as an instrument for labour disputes, suggest that these low-persistence labour disputes did not have much influence over inter-state differences in equilibrium capital-labour ratios in "registered" manufacturing units between 2001 and 2017. However, a 1 percent increase in labour disputes might be associated with a 3.2 percent reduction in total factor productivity for the sector in states where disputes were random events. In the remaining states, where labour disputes have consistently fallen over time, this effect is significantly reduced. Our findings are robust in a different sample of firms.',
@@ -175,10 +199,13 @@ const content = {
 
   // ── Assets ───────────────────────────────────────────────────────────────
   // Files live in public/. profileImageSizes is used for responsive image hints.
+  // socialImage (optional) is the JPEG or PNG used for link previews; profileImage is used when omitted.
+  // icon and appleIcon (optional) set a favicon; none is emitted when they are omitted.
   assets: {
-    profileImage: '/profile.png',
-    profileImageDark: '/profile-dark.png',
+    profileImage: '/profile.webp',
+    profileImageDark: '/profile-dark.webp',
     profileImageAlt: 'Sauhard Srivastava profile photo',
+    socialImage: '/profile-social.jpg',
     profileImageSizes: '(max-width: 768px) 144px, 192px',
     cvPdf: '/resume/resume-web.pdf',
   },
@@ -192,9 +219,13 @@ const content = {
       text: 'See my job market paper',
       label: 'here',
     },
+    // Fields as listed on the job market CV; shown in the Overview section of the Job Market page.
+    fields: ['Macroeconomics', 'International Economics', 'Monetary Economics', 'Macro-Finance', 'Energy and Environmental Economics'],
+    // Email used by the Job Market page icon links; assembled in the browser, never in the page source.
+    contact: { emailUser: 'sriva238', emailDomain: 'umn.edu' },
     jmpSlug: 'import-price-spikes-exchange-rates',   // must match a paper slug above
     jmpPdf: '/papers/hasoe_imports2026.pdf',
-    cvPdf: '/resume/Sauhard%20Srivastava.pdf',
+    cvPdf: '/resume/sauhard-srivastava-cv-jm.pdf',
     cvDescription: 'A PDF of my current job-market curriculum vitae.',
     placementUrl: 'https://cla.umn.edu/economics/people/job-market-candidates',
     placementLabel: 'University of Minnesota placement information ↗',
@@ -207,6 +238,9 @@ const content = {
       { name: 'Neil Mehrotra', institution: 'Federal Reserve Bank of Minneapolis', url: 'https://sites.google.com/site/neilrmehrotra/' },
     ],
   },
+
+  // ── Text overrides (optional) ────────────────────────────────────────────
+  // pages: { ... } and labels: { ... } override template headings and interface text.
 
 }
 

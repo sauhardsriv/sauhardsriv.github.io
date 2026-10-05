@@ -9,10 +9,14 @@ function Footer() {
         <div>
           <p className={styles.footer.text}>© {new Date().getFullYear()} {site.name}</p>
         </div>
-        <span className={styles.footer.divider}></span>
-        <span className={styles.footer.link}>
-          <a href={site.license.url} target="_blank" rel="noopener noreferrer">{site.license.label}</a>
-        </span>
+        {site.license && (
+          <>
+            <span className={styles.footer.divider}></span>
+            <span className={styles.footer.link}>
+              <a href={site.license.url} target="_blank" rel="noopener noreferrer">{site.license.label}</a>
+            </span>
+          </>
+        )}
       </div>
     </footer>
   )

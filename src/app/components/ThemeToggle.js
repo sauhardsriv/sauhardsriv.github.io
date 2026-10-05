@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Sun, Moon } from 'lucide-react'
 import { useTheme } from 'next-themes'
-import { styles } from '../settings'
+import MaterialSymbol from './MaterialSymbol'
+import { labels, styles } from '../settings'
 
 export default function ThemeToggle() {
   const [mounted, setMounted] = useState(false)
@@ -26,12 +26,12 @@ export default function ThemeToggle() {
       onClick={toggleTheme}
       className={styles.buttons.themeToggle}
       type="button"
-      aria-label="Toggle color theme"
+      aria-label={labels.themeToggle}
     >
       {isDark ? (
-        <Sun className={styles.buttons.themeIcon} />
+        <MaterialSymbol name="light_mode" className={styles.buttons.themeIcon} />
       ) : (
-        <Moon className={styles.buttons.themeIcon} />
+        <MaterialSymbol name="dark_mode" className={styles.buttons.themeIcon} />
       )}
     </button>
   )

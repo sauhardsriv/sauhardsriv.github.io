@@ -6,13 +6,24 @@ export const site = siteSettings.site
 export const theme = siteSettings.theme
 export const navigation = siteSettings.navigation
 export const pages = siteSettings.pages
-export const socialLinks = siteSettings.socialLinks
+export const labels = siteSettings.labels
+export const socialLinks = siteSettings.socialLinks || []
 export const profile = siteSettings.profile
-export const papers = siteSettings.papers
-export const cv = siteSettings.cv
-export const jobMarket = siteSettings.jobMarket
-export const assets = siteSettings.assets
+export const papers = siteSettings.papers || []
+export const cv = siteSettings.cv || {}
+export const jobMarket = siteSettings.jobMarket || { active: false }
+export const assets = siteSettings.assets || {}
 export const styles = siteSettings.styles
+
+export const socialImage = assets.socialImage || assets.profileImage
+
+// Next replaces a parent's openGraph object instead of merging it, so pages spread this base.
+export const openGraphBase = {
+  type: 'website',
+  locale: site.locale,
+  siteName: site.name,
+  images: [{ url: socialImage, alt: assets.profileImageAlt }],
+}
 
 function hexToRgbChannels(hex) {
   const value = hex.replace('#', '')

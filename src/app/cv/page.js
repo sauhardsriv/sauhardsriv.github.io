@@ -1,5 +1,6 @@
 import SectionCard from '../components/SectionCard'
-import { assets, cv, pages, styles } from '../settings'
+import { JsonLd, personNode, profilePageNode } from '../structuredData'
+import { assets, cv, openGraphBase, pages, styles } from '../settings'
 
 export const metadata = {
   title: pages.cv.title,
@@ -9,6 +10,7 @@ export const metadata = {
     canonical: pages.cv.path,
   },
   openGraph: {
+    ...openGraphBase,
     url: pages.cv.path,
     title: pages.cv.title,
     description: pages.cv.description,
@@ -38,34 +40,42 @@ function CvEntry({ entry }) {
 export default function CV() {
   return (
     <article className={styles.page}>
-      <h1 className={styles.pageTitle}>
-        Curriculum Vitae{' '}
-        <a
-          href={assets.cvPdf}
-          className={styles.pdfLink}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          [PDF]
-        </a>
-      </h1>
+      <JsonLd graph={[personNode(), profilePageNode(pages.cv)]} />
+
+      <div className={styles.pageHeader}>
+        <h1 className={styles.pageHeaderTitle}>{pages.cv.heading}</h1>
+        {assets.cvPdf && (
+          <a
+            href={assets.cvPdf}
+            className={styles.buttons.filled}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {pages.cv.downloadLabel}
+          </a>
+        )}
+      </div>
 
       <div className={styles.sectionStackCompact}>
-        <SectionCard title="Education" titleClassName={styles.sectionTitleSpacious}>
-          <div className={styles.cvEntryList}>
-            {cv.education.map((entry) => (
-              <CvEntry key={`${entry.title}-${entry.institution}`} entry={entry} />
-            ))}
-          </div>
-        </SectionCard>
+        {cv.education?.length > 0 && (
+          <SectionCard title={pages.cv.educationTitle} titleClassName={styles.sectionTitleSpacious}>
+            <div className={styles.cvEntryList}>
+              {cv.education.map((entry) => (
+                <CvEntry key={`${entry.title}-${entry.institution}`} entry={entry} />
+              ))}
+            </div>
+          </SectionCard>
+        )}
 
-        <SectionCard title="Professional Experience" titleClassName={styles.sectionTitleSpacious}>
-          <div className={styles.cvEntryList}>
-            {cv.experience.map((entry) => (
-              <CvEntry key={`${entry.title}-${entry.institution}-${entry.date}`} entry={entry} />
-            ))}
-          </div>
-        </SectionCard>
+        {cv.experience?.length > 0 && (
+          <SectionCard title={pages.cv.experienceTitle} titleClassName={styles.sectionTitleSpacious}>
+            <div className={styles.cvEntryList}>
+              {cv.experience.map((entry) => (
+                <CvEntry key={`${entry.title}-${entry.institution}-${entry.date}`} entry={entry} />
+              ))}
+            </div>
+          </SectionCard>
+        )}
       </div>
     </article>
   )

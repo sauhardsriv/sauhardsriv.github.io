@@ -2,7 +2,8 @@ import Link from 'next/link'
 import SocialIcons from './components/SocialIcons'
 import SectionCard from './components/SectionCard'
 import ProfileImage from './components/ProfileImage'
-import { jobMarket, pages, profile, site, socialLinks, styles } from './settings'
+import { JsonLd, personNode, profilePageNode } from './structuredData'
+import { jobMarket, openGraphBase, pages, profile, site, styles } from './settings'
 
 export const metadata = {
   title: {
@@ -14,6 +15,7 @@ export const metadata = {
     canonical: pages.home.path,
   },
   openGraph: {
+    ...openGraphBase,
     url: pages.home.path,
     title: site.name,
     description: pages.home.description,
@@ -34,41 +36,9 @@ function BioParagraph({ content }) {
 }
 
 export default function Home() {
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'ProfilePage',
-    '@id': `${site.url}/#profile`,
-    name: site.name,
-    url: site.url,
-    description: site.description,
-    mainEntity: {
-      '@type': 'Person',
-      '@id': `${site.url}/#person`,
-      name: site.author,
-      url: site.url,
-      jobTitle: profile.title,
-      affiliation: {
-        '@type': 'CollegeOrUniversity',
-        name: profile.affiliation,
-      },
-      worksFor: {
-        '@type': 'Organization',
-        name: profile.employer,
-      },
-      knowsAbout: profile.fields,
-      description: `${profile.title}; ${profile.jobMarket}; research in ${profile.fields.join(', ')}`,
-      sameAs: socialLinks
-        .filter((link) => link.type !== 'email' && link.href)
-        .map((link) => link.href),
-    },
-  }
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
+      <JsonLd graph={[personNode(), profilePageNode(pages.home)]} />
 
       <article className={styles.homePage}>
         <div className={styles.homeGrid}>
@@ -78,10 +48,10 @@ export default function Home() {
             <SocialIcons />
           </aside>
 
-          <main className={styles.contentColumn}>
-            <SectionCard title="About Me" titleAs="h1" titleClassName={styles.homeTitle}>
+          <div className={styles.contentColumn}>
+            <SectionCard title={pages.home.heading} titleAs="h1" titleClassName={styles.homeTitle}>
               <div className={styles.bodyCopy}>
-                {profile.bio.map((para, i) => (
+                {(profile.bio || []).map((para, i) => (
                   <BioParagraph key={i} content={para} />
                 ))}
                 {jobMarket.active && jobMarket.homeStatus && jobMarket.homeLink && (
@@ -98,7 +68,7 @@ export default function Home() {
                 )}
               </div>
             </SectionCard>
-          </main>
+          </div>
         </div>
       </article>
     </>

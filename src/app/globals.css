@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 @layer base {
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
   /* Material color-role properties are injected from site.settings.js
      via a <style> tag in the root layout, so colors live in one place. */
   body {
@@ -26,13 +32,12 @@
 
   /* M3 focus indicator: visible only for keyboard navigation, not mouse clicks. */
   :focus-visible {
-    outline: 2px solid rgb(var(--light-primary));
-    outline-offset: 3px;
-    border-radius: 6px;
+    outline: 3px solid rgb(var(--light-secondary));
+    outline-offset: 2px;
   }
 
   .dark :focus-visible {
-    outline-color: rgb(var(--dark-primary));
+    outline-color: rgb(var(--dark-secondary));
   }
 }
 
@@ -64,13 +69,13 @@
 /* Fires on initial load when arriving via a shared #anchor deep-link. */
 .flash-target:target {
   border-radius: 0.5rem;
-  animation: target-flash 1.8s ease-in-out 1;
+  animation: target-flash 1.8s cubic-bezier(0.2, 0, 0, 1) 1;
 }
 
 /* Fires on every click (re-triggered from JS), even if the hash is unchanged. */
 .flash-target.flash-now {
   border-radius: 0.5rem;
-  animation: target-flash 1.8s ease-in-out 1;
+  animation: target-flash 1.8s cubic-bezier(0.2, 0, 0, 1) 1;
 }
 
 @media (prefers-reduced-motion: reduce) {

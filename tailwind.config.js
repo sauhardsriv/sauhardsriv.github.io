@@ -26,6 +26,12 @@ module.exports = {
         'extrabold': 800,
         'black': 900,
       },
+      // Material 3 easing curves.
+      transitionTimingFunction: {
+        m3: 'cubic-bezier(0.2, 0, 0, 1)',
+        'm3-decelerate': 'cubic-bezier(0.05, 0.7, 0.1, 1)',
+        'm3-accelerate': 'cubic-bezier(0.3, 0, 0.8, 0.15)',
+      },
       colors: {
         surface: {
           DEFAULT: 'rgb(var(--light-surface) / <alpha-value>)',
