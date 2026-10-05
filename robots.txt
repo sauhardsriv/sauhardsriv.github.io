@@ -1,33 +1,42 @@
-# Googlebot
-User-agent: Googlebot
-Allow: /
-
-# Bingbot
-User-agent: Bingbot
-Allow: /
-
-# OAI-SearchBot
-User-agent: OAI-SearchBot
-Allow: /
-
-# ChatGPT-User
-User-agent: ChatGPT-User
-Allow: /
-
 # GPTBot
 User-agent: GPTBot
+Disallow: /
+
+# ClaudeBot
+User-agent: ClaudeBot
+Disallow: /
+
+# anthropic-ai
+User-agent: anthropic-ai
 Disallow: /
 
 # Google-Extended
 User-agent: Google-Extended
 Disallow: /
 
+# Applebot-Extended
+User-agent: Applebot-Extended
+Disallow: /
+
+# meta-externalagent
+User-agent: meta-externalagent
+Disallow: /
+
 # CCBot
 User-agent: CCBot
 Disallow: /
 
+# Bytespider
+User-agent: Bytespider
+Disallow: /
+
+# cohere-training-data-crawler
+User-agent: cohere-training-data-crawler
+Disallow: /
+
 # *
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 # Host
